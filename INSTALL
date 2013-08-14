@@ -1,0 +1,63 @@
+Library Lab "Do we own this?" app v1.0
+chip goines (chip_goines@harvard.edu)  7 Aug 13
+
+These are the instructions on how to setup your build enviroment for the "do we own this?" mobile app.
+Since it requires the use of the PhoneGap barcode scanner plugin, you will have to make a device-specific
+build in PhoneGap in order for this app to work.  It is currently built for an ios target, if you would 
+like to build for another platform, follow the directions below and create a PG app for your target instead
+of ios.
+
+Required software:
+--------------------
+- Sencha Touch v 2.2.1 or higher
+	http://www.sencha.com/products/touch/download/
+- Sencha Cmd v 3.1.2 or higher
+	http://www.sencha.com/products/sencha-cmd/download
+- PhoneGap (apache cordova) v 2.9.0 or higher
+	https://github.com/phonegap/phonegap/archive/2.9.0.zip
+- apache cordova plugman (phonegap plugin mgr)
+	https://github.com/apache/cordova-plugman
+- PhoneGap barcode scanner plugin 
+	https://github.com/wildabeast/BarcodeScanner
+- Node.js v 0.10 or higher (npm for installing aforementioned software)
+	http://nodejs.org/
+
+Setup instructions:
+---------------------
+0) install node.js if it's not already installed
+1) install sencha touch
+2) install sencha cmd
+3) install phonegap
+4) create a sencha app by typing "sencha generate app doweown /build_directory_of_doweown"
+5) in the sencha app directory, type "sencha app build package"
+6) type "cd doweown/build" then type "./create doweown/build/doweown/ios edu.harvard.hul.liblab doweown"
+7) plugman install --platform ios --project /path-to/doweown/build/doweown/ios --plugin https://github.com/wildabeast/BarcodeScanner.git
+8) copy cordova.js and barcodescanner.js from the phonegap ios directory to the root of the sencha touch app directory
+9) edit app.json and include cordova.js and barcodescanner.js above the entry for app.js
+10) add this target in the build.xml file in the sencha root folder:
+
+<target name="-after-build">
+                <!-- delete contents of phonegap ios web root -->
+                <delete dir="${build.dir}/ios/www"/>
+
+                <!-- copy sencha page to phonegap ios web root -->
+                <copy todir="${build.dir}/ios/www">
+                        <fileset dir="${build.dir}/package"/>
+                </copy>
+</target>
+
+11) run "sencha app build package" at the sencha app root directory
+  optionally, you can point your browser at http://sencha app root/doweown/build/doweown/package/ to see the optimized html mobile ui 
+  before it is built into an app. It will not be able to access the barcode scanner.
+12) build your native app inside xcode or the android apk
+13) your native app should now run inside an emulator or on the device.
+
+nb: please refer to Brice Mason's "Building iOS Applications with Sencha Touch
+	and PhoneGap" (https://vimeo.com/55148644) for more details on how to link sencha w/ phonegap.
+
+
+Build notes:
+-------------
+-- the js console may give a 404 error on "cordova_plugins.json". you can either create an empty file in the phonegap build or ignore it.
+
+

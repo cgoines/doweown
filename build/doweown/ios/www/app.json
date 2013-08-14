@@ -1,0 +1,1 @@
+{"id":"344bd82a-519b-4a3b-a13d-cca410cc856f","js":[{"path":"cordova.js","type":"js"},{"path":"barcodescanner.js","type":"js"},{"path":"app.js","bundle":true,"update":"delta","type":"js"}],"css":[{"path":"resources/css/app.css","update":"delta","type":"css"}]}
