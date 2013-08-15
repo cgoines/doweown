@@ -23,6 +23,7 @@ Ext.define('doweown.controller.Main', {
                  function(error) {
                  	Ext.Msg.alert("Whoops! Scanning failed: " + error);
                  }
+	);
     }
 
 
