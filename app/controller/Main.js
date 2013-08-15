@@ -13,9 +13,7 @@ Ext.define('doweown.controller.Main', {
 	var scanner = cordova.require("cordova/plugin/BarcodeScanner");
         scanner.scan(
         	function(result) {
-                 	if (result.cancelled)
-                    		Ext.Msg.alert("Scan cancelled.");
-                  	else
+                 	if (result.text)
                   		Ext.Msg.alert("we got a barcode: " + result.text);
                   	//presto search goes here
                   	//var barcode = result.text;
