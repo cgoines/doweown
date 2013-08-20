@@ -8,7 +8,8 @@ Ext.define('doweown.model.Isbn', {
 		{name: 'place',         type: 'string'},
 		{name: 'publisher',     type: 'string'},
 		{name: 'hollisId',	type: 'string'},
-                {name: 'abstract',      type: 'string'}
+                {name: 'description',   type: 'string'},
+                {name: 'thumb',         type: 'string'}
         ]
     }
 });
