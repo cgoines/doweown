@@ -23,12 +23,13 @@ Ext.application({
     name: 'doweown',
 
     requires: [
-        'Ext.MessageBox'
+        'Ext.MessageBox',
+	'doweown.config.Config'
     ],
 
-    views: [
-        'Main'
-    ],
+    views: [ 'Main' ],
+
+    models: [ 'Isbn', 'Avail' ],
 
     controllers: ['Main'],
 
