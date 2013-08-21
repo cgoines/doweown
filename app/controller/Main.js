@@ -1,6 +1,11 @@
 Ext.define('doweown.controller.Main', {
     extend: 'Ext.app.Controller',
 
+    requires: [
+	'doweown.model.Isbn',
+	'doweown.store.Biblio'
+    ],
+
     config: {
         refs: { 'scanBtn': 'main #scanBtn' },
     	control: {
@@ -10,21 +15,11 @@ Ext.define('doweown.controller.Main', {
  
 
     scanImage: function() {
-	/*Ext.data.JsonP.request({
-                                url: doweown.config.Config.getHollisIsbnUrl() + '1930110960',
-                                callbackKey: 'jsonp',
-                                success: function(result2, request) {
-                                        // Get the isbn data from the json object result
-                                        isbnResult = result2.mods;
-                                        Ext.Msg.alert("isbn test call worked");
-                                }
-                            }); */
 	var scanner = cordova.require("cordova/plugin/BarcodeScanner");
         scanner.scan(
         	function(result) {
                  	if (result.text)
 			{
-                  	    //Ext.Msg.alert(result.text);
                   	    //presto search goes here
                   	    var barcode = result.text;
 			    var gBooksURL = doweown.config.Config.getGoogleBooksUrl() + barcode;
@@ -37,58 +32,113 @@ Ext.define('doweown.controller.Main', {
 			    var isbnResult = false;
 			    var similarResult = false; 
 
+			    var title = '';
+			    var publisher = '';
+			    var place = '';
+			    var description = '';
+			    var author = '';
+			    var thumb = '';
+			    var date = '';
 			    var hollisId = 0;
+
 			    
 			    Ext.data.JsonP.request({
                     		url: gBooksURL,
+				disableCaching: true,
                     		success: function(res, request) {
                         		// Get the gbooks data from the json object result
-                        		gBooksResult = res;
-					console.log("google worked");
-					console.log(gBooksResult.items[0].volumeInfo.imageLinks.smallThumbnail);
-                    		}
+					if (res.totalItems > 0) {
+						gBooksResult = true;
+						console.log("google worked");
+						thumb = res.items[0].volumeInfo.imageLinks.smallThumbnail;
+						title =  res.items[0].volumeInfo.title;
+	                                	date =  res.items[0].volumeInfo.publishedDate;
+	                                	publisher =  res.items[0].volumeInfo.publisher;
+	                                	description = res.items[0].volumeInfo.description;
+
+						//call hollis
+						Ext.data.JsonP.request({
+                                			url: isbnURL,
+                                			callbackKey: 'jsonp',
+                                			disableCaching: true,
+                                			success: function(res, request) {
+                                        			// Get the isbn data from the json object result
+                                        			if (res.mods) {
+                                                			isbnResult = true;
+                                                			console.log("isbn worked");
+                                                			hollisId = res.mods.recordInfo.recordIdentifier.substring(0,9);
+                                                			console.log(hollisId);
+                                                			author = res.mods.name.namePart;
+                                                			place = res.mods.originInfo.place[1].placeTerm.content;
+
+									//call preto again for availabilty
+									availURL  = doweown.config.Config.getHollisAvailUrl() + hollisId;
+                            						console.log(availURL);
+                            						Ext.data.JsonP.request({
+                                					    url: availURL,
+                                					    callbackKey: 'jsonp',
+                                					    disableCaching: true,
+                                					    success: function(res, request) {
+                                        				    // Get the availability data from the json object result
+                                        					if (res.availability) {
+                                                				   availResult = true;
+                                                				   console.log("avail worked");
+                                                				   //console.log(availResult);
+
+										   //add book to books store and availability store
+                                						   console.log ('title: ' +  title);
+						                                   console.log ('author: ' + author);
+						                                   console.log ('date: ' +  date);
+						                                   console.log ('place: ' + place);
+						                                   console.log ('publisher: ' + publisher);
+						                                   console.log ('hollisId: ' + hollisId);
+						                                   console.log ('description: ' + description);
+						                                   console.log ('thumb: ' + thumb);
+						
+						                                   var hollisRec = Ext.create('doweown.model.Isbn', {
+						                                    'title' :   title,
+						                                    'author':   author,
+						                                    'date':     date,
+						                                    'place':    place,
+						                                    'publisher': publisher,
+						                                    'hollisId': hollisId,
+						                                    'description': description,
+						                                    'thumb':    thumb      
+						                                   });
+						
+						                                   var Biblio = Ext.getStore('Biblio');
+						
+						                                   if (Biblio.getCount > 0) {
+						                                        Biblio.removeAll();
+						                                    }
+						
+						                                    /*if (AvailStore.getCount > 0)
+						                                        AvailStore.removeAll();*/
+
+                                						    Biblio.add(hollisRec);
+                                						    Ext.Msg.alert('bibrec added');
+                               						            //switch to result view
+										
+                                        					}
+                                					    }
+                            						});
+                                        			}
+                                			},
+							failure: function(res, request) {
+								Ext.Msg.alert("Not in hollis. sorry.");
+							}
+                            			});
+					}
+					else {
+						Ext.Msg.alert("ISBN " + barcode + " not found.");
+					}
+                    		},
+				failure: function(res, request) {
+					Ext.Msg.alert("No information found for \nISBN: " + barcode);
+				}
                 	    });
 
 			
-			   Ext.data.JsonP.request({
-                                url: isbnURL,
-                                callbackKey: 'jsonp',
-                                success: function(res, request) {
-                                        // Get the isbn data from the json object result
-                                        isbnResult = res.mods;
-					console.log("isbn worked");
-					console.log(isbnResult.recordInfo.recordIdentifier.substring(0,9));
-					hollisId = isbnResult.recordInfo.recordIdentifier.substring(0,9);
-                                }
-                            }); 
-
-			    availURL  = doweown.config.Config.getHollisAvailUrl() + hollisId;
-			    Ext.data.JsonP.request({
-                                url: availURL,
-                                callbackKey: 'jsonp',
-                                success: function(res, request) {
-                                        // Get the availability data from the json object result
-                                        availResult = res.availability;
-					console.log("avail worked");
-					console.log(availResult);
-                                }
-                            }); 
-
-
-
-
-			    if (  (gBooksResult)  && (isbnResult) && (availResult)  ) {
-
-
-				console.log(gBooksResult.items[0].volumeInfo.imageLinks.thumbnail);
-
-			    }
-		            else {
-				Ext.Msg.alert("lookups failed.");
-			    }
-
-
-
 
 
 
