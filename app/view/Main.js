@@ -14,29 +14,21 @@ Ext.define('doweown.view.Main', {
                 iconCls: 'search',
                 styleHtmlContent: true,
                 scrollable: false,
+		layout: 'fit',
 
-                items: [ 
-		    {
-                    	docked: 'top',
-                    	xtype: 'titlebar',
-                    	title: 'Do we own this?'
-                    },
-		   
-		    {
-			xtype: 'panel',
-			itemId: 'mainscreen',
-			id: 'mainscreen',
-			items: [
-			   {
-                             xtype: 'button',
-                             itemId: 'scanBtn',
-                             text: 'Scan Barcode'
-                           }
-			]
-		    }
-
-
-		]
+                items: [{
+			   xtype: 'navigationview',
+                	   itemId: 'mainscreen',
+                	   id: 'mainscreen',
+			   items: [{
+			     title: 'Do we own this?',
+		    	     items: [ {
+                        	   xtype: 'button',
+                        	   itemId: 'scanBtn',
+                        	   text: 'Scan Barcode'
+		   	  	}] 
+			    }]
+		  }]
 	
             },
             {
