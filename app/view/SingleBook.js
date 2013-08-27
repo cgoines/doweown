@@ -1,15 +1,8 @@
 Ext.define('doweown.view.SingleBook', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.List',
     xtype: 'singlebook',
-    scrollable: true,
-    styleHtmlContent: true,
-    layout: {
-      type: 'fit',
-      align: 'center'
-     },
 
-    items: [
-        {
+    config: {
 	   title: 'Search Results',
            xtype: 'list',
 	   store: 'Biblio',
@@ -18,8 +11,7 @@ Ext.define('doweown.view.SingleBook', {
                                 Ext.Msg.alert('Tap', 'Go to mobile hollis for ' + record.get('title'), Ext.emptyFn);
             },
             itemTpl: '<img src="{thumb}"/><strong>{title}</strong> - {author} <br>{description}'
-         }
+     }
 
-    ]
 
 });
