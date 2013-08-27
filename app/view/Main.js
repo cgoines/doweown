@@ -21,8 +21,8 @@ Ext.define('doweown.view.Main', {
                 	   itemId: 'mainscreen',
                 	   id: 'mainscreen',
 			   items: [{
-			     title: 'Do we own this?',
-		    	     items: [ {
+			     	title: 'Do we own this?',
+		    	     	items: [ {
                         	   xtype: 'button',
                         	   itemId: 'scanBtn',
                         	   text: 'Scan Barcode'
