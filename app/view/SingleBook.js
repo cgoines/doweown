@@ -9,12 +9,8 @@ Ext.define('doweown.view.SingleBook', {
      },
 
     items: [
-       {
-	  docked: 'top',
- 	  xtype: 'titlebar',
-	  title: 'Search results'
-        },
         {
+	   title: 'Search Results',
            xtype: 'list',
 	   store: 'Biblio',
            pinHeaders: false,
