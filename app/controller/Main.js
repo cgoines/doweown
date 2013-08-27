@@ -3,11 +3,15 @@ Ext.define('doweown.controller.Main', {
 
     requires: [
 	'doweown.model.Isbn',
-	'doweown.store.Biblio'
+	'doweown.store.Biblio',
+	'doweown.store.AvailStore'
     ],
 
     config: {
-        refs: { 'scanBtn': 'main #scanBtn' },
+	views: ['doweown.view.Main', 'doweown.view.SingleBook'],
+        refs: { 'scanBtn': 'main #scanBtn',
+		'mainScreen': 'main #mainscreen'
+        },
     	control: {
             scanBtn: { tap: 'scanImage' }
          }
@@ -15,6 +19,7 @@ Ext.define('doweown.controller.Main', {
  
 
     scanImage: function() {
+	var ms = this.getMainScreen();
 	var scanner = cordova.require("cordova/plugin/BarcodeScanner");
         scanner.scan(
         	function(result) {
@@ -111,13 +116,21 @@ Ext.define('doweown.controller.Main', {
 						                                   if (Biblio.getCount > 0) {
 						                                        Biblio.removeAll();
 						                                    }
-						
-						                                    /*if (AvailStore.getCount > 0)
-						                                        AvailStore.removeAll();*/
+
+										   var AvailStore = Ext.getStore('AvailStore');
+						                                    if (AvailStore.getCount > 0)
+						                                        AvailStore.removeAll();
+										    AvailStore.proxy.url = availURL;
+										    AvailStore.load();
+										    console.log ('availability info loaded');
 
                                 						    Biblio.add(hollisRec);
-                                						    Ext.Msg.alert('bibrec added');
+										    console.log ('bibrec added');
+
+
                                						            //switch to result view
+										    ms.push({ xtype : 'singlebook' });
+										    Ext.Msg.alert('Yes, we do own it!');
 										
                                         					}
                                 					    }
