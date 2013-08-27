@@ -27,7 +27,7 @@ Ext.application({
 	'doweown.config.Config'
     ],
 
-    views: [ 'Main', 'SingleBook', 'AvailStore' ],
+    views: [ 'Main', 'SingleBook', 'AvailBook' ],
 
     models: [ 'Isbn','Avail','Availability', 'Branch','Repository','Collection', 
 	'Items','ItemRecord','NoItems','HoldTag','Gbooks','AvailVal' ],
