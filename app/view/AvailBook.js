@@ -3,14 +3,14 @@ Ext.define('doweown.view.AvailBook', {
     xtype: 'availbook',
 
     config: {
-           title: 'Search Results',
+           title: 'Availability',
            xtype: 'list',
            store: 'AvailStore',
            pinHeaders: false,
-           onItemDisclosure: function( record, btn, index ) {
+           /*onItemDisclosure: function( record, btn, index ) {
                                 Ext.Msg.alert('Tap', 'Go to mobile hollis for ' + record.get('title'), Ext.emptyFn);
-            },
-            itemTpl: '<img src="{thumb}"/><strong>{title}</strong> - {author} <br>{description}'
+            },*/
+            itemTpl: '{repository.name}: {collection.collectionname}'
      }
 
 
