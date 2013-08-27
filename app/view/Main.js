@@ -12,7 +12,6 @@ Ext.define('doweown.view.Main', {
             {
                 title: 'Scan',
                 iconCls: 'search',
-
                 styleHtmlContent: true,
                 scrollable: false,
 
@@ -22,27 +21,18 @@ Ext.define('doweown.view.Main', {
                     	xtype: 'titlebar',
                     	title: 'Do we own this?'
                     },
-
+		   
 		    {
-			xtype: 'button',
-			text: 'scan',
-			handler: function() {
-				var scanner = cordova.require("cordova/plugin/BarcodeScanner");
-				scanner.scan(
-    					function(result) {
-        				  if (result.cancelled)
-            					Ext.Msg.alert("the user cancelled the scan");
-        				  else
-            					Ext.Msg.alert("we got a barcode: " + result.text);
-						//presto search goes here
-						var barcode = result.text;	
-    					},
-    					function(error) {
-        					Ext.Msg.alert("Whoops! Scanning failed: " + error);
-    					}
-				);
-
-			}
+			xtype: 'panel',
+			itemId: 'mainscreen',
+			id: 'mainscreen',
+			items: [
+			   {
+                             xtype: 'button',
+                             itemId: 'scanBtn',
+                             text: 'Scan Barcode'
+                           }
+			]
 		    }
 
 
