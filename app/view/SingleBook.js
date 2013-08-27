@@ -8,7 +8,8 @@ Ext.define('doweown.view.SingleBook', {
 	   store: 'Biblio',
            pinHeaders: false,
            onItemDisclosure: function( record, btn, index ) {
-                                Ext.Msg.alert('Tap', 'Go to mobile hollis for ' + record.get('title'), Ext.emptyFn);
+                                //Ext.Msg.alert('Tap', 'Go to mobile hollis for ' + record.get('title'), Ext.emptyFn);
+				this.getParent().push( {xtype: 'availbook'} );
             },
             itemTpl: '<img src="{thumb}"/><strong>{title}</strong> - {author} <br>{description}'
      }
