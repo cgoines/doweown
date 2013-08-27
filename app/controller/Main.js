@@ -118,8 +118,9 @@ Ext.define('doweown.controller.Main', {
 						                                    }
 
 										   var AvailStore = Ext.getStore('AvailStore');
-						                                    if (AvailStore.getCount > 0)
+						                                   if (AvailStore.getCount > 0) {
 						                                        AvailStore.removeAll();
+										    }
 										    AvailStore.proxy.url = availURL;
 										    AvailStore.load();
 										    console.log ('availability info loaded');
@@ -130,7 +131,6 @@ Ext.define('doweown.controller.Main', {
 
                                						            //switch to result view
 										    ms.push({ xtype : 'singlebook' });
-										    Ext.Msg.alert('Yes, we do own it!');
 										
                                         					}
                                 					    }
