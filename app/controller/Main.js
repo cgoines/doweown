@@ -8,7 +8,7 @@ Ext.define('doweown.controller.Main', {
     ],
 
     config: {
-	views: ['doweown.view.Main', 'doweown.view.SingleBook'],
+	views: ['doweown.view.Main', 'doweown.view.SingleBookView'],
         refs: { 'scanBtn': 'main #scanBtn',
 		'mainScreen': 'main #mainscreen'
         },
@@ -113,24 +113,24 @@ Ext.define('doweown.controller.Main', {
 						
 						                                   var Biblio = Ext.getStore('Biblio');
 						
-						                                   if (Biblio.getCount > 0) {
+						                                   if (Biblio.getAllCount() > 0) {
 						                                        Biblio.removeAll();
 						                                    }
+										    Biblio.add(hollisRec);
 
 										   var AvailStore = Ext.getStore('AvailStore');
-						                                   if (AvailStore.getCount > 0) {
+						                                   if (AvailStore.getAllCount() > 0) {
 						                                        AvailStore.removeAll();
 										    }
 										    AvailStore.proxy.url = availURL;
+										    AvailStore.proxy.callbackKey = 'jsonp';
 										    AvailStore.load();
-										    console.log ('availability info loaded');
-
-                                						    Biblio.add(hollisRec);
-										    console.log ('bibrec added');
 
 
                                						            //switch to result view
 										    ms.push({ xtype : 'singlebook' });
+										    console.log ('availability info loaded');
+                                                                                    console.log('availalility: ' + AvailStore.getAllCount() );
 										
                                         					}
                                 					    }
