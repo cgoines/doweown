@@ -34,7 +34,7 @@ Ext.application({
 
     controllers: ['Main'],
 
-    stores: [ 'AvailStore', 'Biblio' ],
+    stores: [ 'AvailStore', 'Biblio', 'BranchStore' ],
 
     icon: {
         '57': 'resources/icons/Icon.png',
