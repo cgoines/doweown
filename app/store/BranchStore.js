@@ -1,13 +1,17 @@
 Ext.define('doweown.store.BranchStore', {
         extend: 'Ext.data.Store',
         alias: 'store.BranchStore',
-        model: 'doweown.model.Branch',
-        autoLoad: false,
-        proxy: {
+	config: {
+          model: 'doweown.model.Branch',
+          autoLoad: true,
+          proxy: {
             type: 'jsonp',
             callbackKey: 'jsonp',
+	    url: 'http://webservices.lib.harvard.edu/rest/hollis/avail/011573107',
             reader: {
-                rootProperty: 'branch'
+		type: 'json',
+                rootProperty: 'availability.branch'
             }
-        }
+          }
+	}
 });
