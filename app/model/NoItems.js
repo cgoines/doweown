@@ -3,8 +3,8 @@ Ext.define('doweown.model.NoItems', {
     config: {
         belongsTo: 'Branch',
 	fields: [
-                {name: 'id',     type: 'string'},
-                {name: 'url',    type: 'string'}
+                {name: 'id',     type: 'string', mapping: 'id'},
+                {name: 'url',    type: 'string', mapping: 'url'}
         ]
     }
 });

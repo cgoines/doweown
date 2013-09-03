@@ -3,10 +3,10 @@ Ext.define('doweown.model.Repository', {
     config: {
         belongsTo: 'Branch',
         fields: [
-		{name: 'name',     type: 'string'},
-		{name: 'type',     type: 'string'},
-                {name: 'id',	   type: 'string'},
-                {name: 'libLink',  type: 'string'}
+		{name: 'name',     type: 'string', mapping: 'name' },
+		{name: 'type',     type: 'string', mapping: 'type' },
+                {name: 'id',	   type: 'string', mapping: 'id' },
+                {name: 'libLink',  type: 'string', mapping: 'libLink' }
         ]
     }
 });

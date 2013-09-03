@@ -3,9 +3,9 @@ Ext.define('doweown.model.HoldTag', {
     config: {
 	belongsTo: 'Collection',
         fields: [
-                {name: 'availkey',   type: 'string'},
-                {name: 'availval',   type: 'string'},
-		{name: 'url',        type: 'string', mapping:'availval.url'}
+                {name: 'availkey',   type: 'string', mapping: 'availkey'},
+                {name: 'availval',   type: 'string', mapping: 'availval'},
+		{name: 'url',        type: 'string', mapping: 'availval.url'}
         ]
     }
 });

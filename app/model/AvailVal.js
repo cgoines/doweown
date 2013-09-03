@@ -3,7 +3,7 @@ Ext.define('doweown.model.AvailVal', {
     config: {
         fields: [
                 {name: 'text',         type: 'string'},
-                {name: 'url',        type: 'string'},
+                {name: 'url',        type: 'string'}
         ]
     }
 });
