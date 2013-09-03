@@ -12,6 +12,7 @@ Ext.define('doweown.store.BranchStore', {
 		type: 'json',
                 rootProperty: 'availability.branch'
             }
-          }
+          },
+
 	}
 });
