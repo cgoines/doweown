@@ -6,6 +6,7 @@ Ext.define('doweown.config.Config', {
 		hollisAvailUrl:   'http://webservices.lib.harvard.edu/rest/hollis/avail/',
 		hollisSimilarUrl: 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?q=title:',
 		googleBooksUrl:   'https://www.googleapis.com/books/v1/volumes?q=isbn:',
+		worldCatUrl:	  'http://www.worldcat.org/webservices/catalog/content/libraries/isbn/',
 		worldCatDevKey:   ''
 	},
 
