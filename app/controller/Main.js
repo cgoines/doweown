@@ -2,9 +2,12 @@ Ext.define('doweown.controller.Main', {
     extend: 'Ext.app.Controller',
 
     requires: [
+	'Ext.data.proxy.JsonP',
+	'Ext.navigation.View',
 	'doweown.model.Isbn',
 	'doweown.store.Biblio',
-	'doweown.store.AvailStore'
+	'doweown.store.AvailStore',
+	'doweown.store.BranchStore'
     ],
 
     config: {
@@ -117,21 +120,32 @@ Ext.define('doweown.controller.Main', {
 						                                        Biblio.removeAll();
 						                                    }
 										    Biblio.add(hollisRec);
+										    console.log("bibrec added");
 
-										   var AvailStore = Ext.getStore('AvailStore');
+										   /*var AvailStore = Ext.getStore('AvailStore');
 						                                   if (AvailStore.getAllCount() > 0) {
 						                                        AvailStore.removeAll();
 										    }
 										    AvailStore.proxy.url = availURL;
-										    AvailStore.proxy.callbackKey = 'jsonp';
-										    AvailStore.load();
+										    AvailStore.load();*/
 
+										    var BranchStore = Ext.getStore('BranchStore');
+										    if (BranchStore.getAllCount() > 0) {
+                                                                                        BranchStore.removeAll();
+                                                                                    }
+										    BranchStore.getProxy().setUrl(availURL);
+										    console.log("proxy url set to: " + availURL);
+                                                                                    BranchStore.load();
+										    console.log("branch store loaded");
+										    BranchStore.sync();
+										    console.log("branch store synched");
 
                                						            //switch to result view
-										    ms.push({ xtype : 'singlebook' });
-										    console.log ('availability info loaded');
-                                                                                    console.log('availalility: ' + AvailStore.getAllCount() );
-										
+										    //console.log('availability info loaded');
+                                                                                    //console.log('availalility: ' + AvailStore.getAllCount() );
+										    console.log('branch info loaded');
+										    console.log('branches: ' + BranchStore.getAllCount() );
+										    ms.push({ xtype : 'singlebook' });	
                                         					}
                                 					    }
                             						});
