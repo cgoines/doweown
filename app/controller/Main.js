@@ -7,7 +7,8 @@ Ext.define('doweown.controller.Main', {
 	'doweown.model.Isbn',
 	'doweown.store.Biblio',
 	'doweown.store.AvailStore',
-	'doweown.store.BranchStore'
+	'doweown.store.BranchStore',
+	'doweown.store.WorldCatStore'
     ],
 
     config: {
