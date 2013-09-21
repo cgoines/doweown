@@ -12,9 +12,9 @@ Ext.define('doweown.store.WorldCatStore', {
 		oclcsymbol:  doweown.config.Config.getWorldCatLibs(),
 		format: 'json'
 	    },
-	    url: '',
             reader: {
-		type: 'json'
+		type: 'json',
+		totalProperty: 'totalLibCount'
             }
           }
 
