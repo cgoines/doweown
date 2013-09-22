@@ -12,7 +12,8 @@ Ext.define('doweown.controller.Main', {
     ],
 
     config: {
-	views: ['doweown.view.Main', 'doweown.view.SingleBookView'],
+	views: ['doweown.view.Main', 'doweown.view.SingleBookView', 
+	  'doweown.view.WorldCatView'],
         refs: { 'scanBtn': 'main #scanBtn',
 		'mainScreen': 'main #mainscreen'
         },
@@ -55,26 +56,82 @@ Ext.define('doweown.controller.Main', {
     },
 
    
-    worldCatLookup: function(bcode) {
-  	console.log('commencing worldcat lookup');
+    worldCatLookup: function(bcode, thumbnail) {
+  	console.log('commencing worldcat lookup for isbn: ' + bcode);
   	var ms = this.getMainScreen();
 	var worldCatURL = doweown.config.Config.getWorldCatUrl();
-
+	
+	
+	/* just call jsonp req instread
 	var WorldCatStore = Ext.getStore('WorldCatStore');
 	    if (WorldCatStore.getAllCount() > 0) {
-                WorldCatStore.removeAll();
+                //WorldCatStore.removeAll();
+                console.log("worldcatstore has items");
         }
 	var lookupURL = worldCatURL + bcode;
  	
 	WorldCatStore.getProxy().setUrl(lookupURL);
   	console.log("proxy url set to: " + lookupURL);
-	WorldCatStore.load();
-	console.log("worldcat store loaded with " +
-          WorldCatStore.getAllCount() + " records");
-  	WorldCatStore.sync();
-   	console.log("worldcat store synched");
+	WorldCatStore.load(); */
+	
+	var lookupURL = worldCatURL + bcode;
+	console.log('worldcat url is: ' + lookupURL);
+	var worldCatStore = Ext.getStore('WorldCatStore');
+	if (worldCatStore.getAllCount() > 0) {
+        worldCatStore.removeAll();
+    }
+	Ext.data.JsonP.request({
+	    url: lookupURL,
+	    callbackKey: 'callback',
+	    params: {
+        	wskey: doweown.config.Config.getWorldCatDevKey(),
+            oclcsymbol:  doweown.config.Config.getWorldCatLibs(),
+            format: 'json'
+        },
+	    success: function(res, request) {
+	        if (typeof res.title != undefined){
+	          console.log('worldcat jsonp call successful'); 
+	          var title = res.title;
+	          console.log('title: ' + title);
+	          var author = res.author;
+	          var date = res.date;
+	          var publisher = res.publisher;
+	          var ISBN = res.ISBN;
+	          var totalLibCount = res.totalLibCount;
+	          var library = res.library;
+	          console.log('libraries: ' + library);
+	          var worldCatRec = Ext.create('doweown.model.WorldCatBooks', {
+	            'title': title,
+	            'author': author,
+	            'date': date,
+	            'publisher': publisher,
+	            'ISBN': ISBN,
+	            'library': library,
+	            'thumbnail': thumbnail
+	          });
+	          console.log('worldcat record created');
+	          worldCatStore.add(worldCatRec);
+	          console.log('worldcat record added');
+	        //worldCatStore.sync();
+	        //console.log('worldcat store synced');
+	          console.log("worldcat store loaded with " + 
+	           worldCatStore.getAllCount() + " records");
+	        //go to worldcat result list
+	          ms.push({ xtype : 'worldcatview' });
+	        }
+	        else { //not in worldcat
+	        	Ext.Msg.alert("Catalog info for ISBN " + barcode + " not found.");
+	        }
+	    },
+	    failure: function(res, request) { //worldcat lookup  failed - goto email form
+	    	Ext.Msg.alert("Catalog info for ISBN " + barcode + " not found.");	
+	    }
+	    
+	
+	});
 
-     },
+
+    },
 
 	
 
@@ -175,22 +232,22 @@ Ext.define('doweown.controller.Main', {
                           });
                 	    }
             		   },
-					   failure: function(res, request) {
+					   failure: function(res, request) { //not in hollis
 			   			 //do worldcat lookup
-			   			 Ext.Msg.alert(barcode + " not in hollis. sorry.");
-			   			 mainController.worldCatLookup(barcode);
+			   			 //Ext.Msg.alert(barcode + " not in hollis. sorry.");
+			   			 mainController.worldCatLookup(barcode, thumb);
 					   }
         			});
 				}		
 				else { // not found in gbooks, do worldcat lookup
 						//do worldcat lookup
-						mainController.worldCatLookup(barcode);
-						Ext.Msg.alert("ISBN " + barcode + " not found.");						
+						mainController.worldCatLookup(barcode, null);
+						//Ext.Msg.alert("ISBN " + barcode + " not found.");					
 				}
 		    },
 			failure: function(res, request) { //gBooks lookup req failed - try worldcat anyway
 					Ext.Msg.alert("something failed");
-					mainController.worldCatLookup(barcode);
+					mainController.worldCatLookup(barcode, null);
 			}
 		});
 
