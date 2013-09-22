@@ -89,7 +89,7 @@ Ext.define('doweown.controller.Main', {
             format: 'json'
         },
 	    success: function(res, request) {
-	        if (typeof res.title != undefined){
+	        if (typeof res.title != 'undefined'){
 	          console.log('worldcat jsonp call successful'); 
 	          var title = res.title;
 	          console.log('title: ' + title);
@@ -138,6 +138,7 @@ Ext.define('doweown.controller.Main', {
      hollisLookup: function(barcode) {
 		//presto search goes here
 		console.log('commencing hollis lookup');
+		console.log('nothumbs is: ' + 'http://books.google.com/googlebooks/images/no_cover_thumb.gif' );
 		var ms = this.getMainScreen();
 		var gBooksURL = doweown.config.Config.getGoogleBooksUrl() + barcode;
 		var availURL;
@@ -157,7 +158,7 @@ Ext.define('doweown.controller.Main', {
 		var thumb = '';
 		var date = '';
 		var hollisId = 0;
-
+		console.log('gbooks url: ' + gBooksURL);
 			    
 		Ext.data.JsonP.request({
         	url: gBooksURL,
@@ -167,11 +168,21 @@ Ext.define('doweown.controller.Main', {
 				if (res.totalItems > 0) {
 					gBooksResult = true;
 				  	console.log("google worked");
-				  	thumb = res.items[0].volumeInfo.imageLinks.smallThumbnail;
+				  	if ( res.items[0].volumeInfo.imageLinks != null ) {
+				  	  thumb = res.items[0].volumeInfo.imageLinks.smallThumbnail;
+				  	}
+				  	else {
+				  	   thumb = 'http://books.google.com/googlebooks/images/no_cover_thumb.gif';
+				  	}
+				  	console.log('thumb: ' + thumb);
 				 	title =  res.items[0].volumeInfo.title;
+				 	console.log('title: ' + title);
 	             	date =  res.items[0].volumeInfo.publishedDate;
+	             	console.log('date: ' + date);
 	                publisher =  res.items[0].volumeInfo.publisher;
+	                console.log('publisher: ' + publisher);
 	                description = res.items[0].volumeInfo.description;
+	                console.log('description: ' + description);
 	                                	
 					//call hollis
 					Ext.data.JsonP.request({
@@ -241,13 +252,15 @@ Ext.define('doweown.controller.Main', {
 				}		
 				else { // not found in gbooks, do worldcat lookup
 						//do worldcat lookup
-						mainController.worldCatLookup(barcode, null);
+						var t = 'http://books.google.com/googlebooks/images/no_cover_thumb.gif';
+						mainController.worldCatLookup(barcode, t);
 						//Ext.Msg.alert("ISBN " + barcode + " not found.");					
 				}
 		    },
 			failure: function(res, request) { //gBooks lookup req failed - try worldcat anyway
 					Ext.Msg.alert("something failed");
-					mainController.worldCatLookup(barcode, null);
+					var t = 'http://books.google.com/googlebooks/images/no_cover_thumb.gif';
+					mainController.worldCatLookup(barcode, t);
 			}
 		});
 
