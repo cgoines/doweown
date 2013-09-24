@@ -58,6 +58,7 @@ Ext.define('doweown.controller.Main', {
 	//get thumb and optional descriptive blurb info
 	googleLookup: function(gBooksUrl, searchType) {
 		var ms = this.getMainScreen();
+		var title,thumb,description,date,author,publisher;
 		console.log('google lookup');
 		console.log('gbooks called url: ' + gBooksUrl);
 		Ext.data.JsonP.request({
@@ -78,6 +79,8 @@ Ext.define('doweown.controller.Main', {
 				  	console.log('thumb: ' + thumb);
 				 	title =  res.items[0].volumeInfo.title;
 				 	console.log('title: ' + title);
+				 	//author =  res.items[0].volumeInfo.author;
+				 	//console.log('author: ' + author);
 	             	date =  res.items[0].volumeInfo.publishedDate;
 	             	console.log('date: ' + date);
 	                publisher =  res.items[0].volumeInfo.publisher;
@@ -91,17 +94,23 @@ Ext.define('doweown.controller.Main', {
 	                   var hollisRec = hollis.getAt(0);
 	                   hollisRec.set('thumb', thumb);
 	                   hollisRec.set('description', description);
+	                   hollisRec.set('date', date);
 	                   if (hollisRec.get('title') == '' ) 
 	                      hollisRec.set('title', title);
-	                   hollis.sync();
+	                   //if (hollisRec.get('author') == '' ) 
+	                   //   hollisRec.set('author', author);
+	                   //hollis.sync();
+	                   console.log('showing singlebookview');
 	                   ms.push({ xtype: 'singlebook' });
 	                }
 	                else {
 	                   var worldCat = Ext.getStore('WorldCatStore');
-	                   var worldCatRec = worldCatStore.getAt(0);
+	                   console.log("worldcat store loaded with " + worldCat.getAllCount() + " records");
+	                   var worldCatRec = worldCat.getAt(0);
+	                   console.log("updating world cat record: " + worldCatRec.get('title') );
 	                   worldCatRec.set('thumbnail', thumb);
 	                   worldCatRec.set('description', description);
-	                   worldCat.sync();
+	                   console.log('showing worldcatview');
 	                   ms.push({ xtype : 'worldcatview' });
 	                }
 	                                	
@@ -173,6 +182,7 @@ Ext.define('doweown.controller.Main', {
 	          });
 	          console.log('worldcat record created');
 	          worldCatStore.add(worldCatRec);
+	          //worldCatStore.sync();
 	          console.log('worldcat record added');
 	        //worldCatStore.sync();
 	        //console.log('worldcat store synced');
@@ -180,11 +190,16 @@ Ext.define('doweown.controller.Main', {
 	           worldCatStore.getAllCount() + " records");
 	          //lookup google for thumbnail & go to worldcat result list
 	          var isbnString = '';
-              for (var i=0; i < ISBN.length; i++) {
-			  	isbnString = isbnString + 'isbn:' + ISBN[i];
-                if (i < (isbnList.length-2)) 
-                	isbnString = isbnString + '+OR+';       	
-               }
+	          if (ISBN instanceof Array ) {
+                for (var i=0; i < ISBN.length; i++) {
+			  	  isbnString = isbnString + 'isbn:' + ISBN[i];
+                  if (i < (ISBN.length-1)) 
+                	  isbnString = isbnString + '+OR+';       	
+                 }
+              }
+              else { // instance of String
+                isbnString = "isbn:" + ISBN;
+              }
               console.log('isbnString: ' + isbnString);
               gBooksURL = gBooksURL + isbnString;
               console.log('gbooks url: ' + gBooksURL);
@@ -265,9 +280,18 @@ Ext.define('doweown.controller.Main', {
                           		  }
                           	  }
                             }
-                          } else {
-                            isbnString = 'isbn:' + res.mods.identifier.content.split(' ',1);
+                          } else { //single isbn
+                            if (res.mods.identifier.content instanceof String) 
+                              isbnString = 'isbn:' + res.mods.identifier.content.split(' ',1);
+                            else
+                              isbnString = 'isbn:' + res.mods.identifier.content;
                           }
+                          // append the original isbn barcode found in the gbooks url if 
+                          // not in the hollis record, since its not always there. good grief
+                          if (isbnString.indexOf(barcode) == -1) 
+                          	isbnString = isbnString + '+OR+isbn:' + barcode;
+                          if (isbnString.length == 0)
+                             isbnString = 'isbn:' + barcode;
                           console.log('isbnString: ' + isbnString);
                           gBooksURL = gBooksURL + isbnString;
                           //call google
