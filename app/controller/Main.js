@@ -58,7 +58,7 @@ Ext.define('doweown.controller.Main', {
 	//get thumb and optional descriptive blurb info
 	googleLookup: function(gBooksUrl, searchType) {
 		var ms = this.getMainScreen();
-		var title,thumb,description,date,author,publisher;
+		var title,thumb,description,date,publisher;
 		console.log('google lookup');
 		console.log('gbooks called url: ' + gBooksUrl);
 		Ext.data.JsonP.request({
@@ -79,7 +79,6 @@ Ext.define('doweown.controller.Main', {
 				  	console.log('thumb: ' + thumb);
 				 	title =  res.items[0].volumeInfo.title;
 				 	console.log('title: ' + title);
-				 	//author =  res.items[0].volumeInfo.author;
 				 	//console.log('author: ' + author);
 	             	date =  res.items[0].volumeInfo.publishedDate;
 	             	console.log('date: ' + date);
@@ -93,13 +92,13 @@ Ext.define('doweown.controller.Main', {
 	                   var hollis = Ext.getStore('Biblio');
 	                   var hollisRec = hollis.getAt(0);
 	                   hollisRec.set('thumb', thumb);
-	                   hollisRec.set('description', description);
+	                   if (hollisRec.get('description') == '') 
+	                     hollisRec.set('description', description);
 	                   hollisRec.set('date', date);
 	                   if (hollisRec.get('title') == '' ) 
 	                      hollisRec.set('title', title);
-	                   //if (hollisRec.get('author') == '' ) 
-	                   //   hollisRec.set('author', author);
-	                   //hollis.sync();
+	                   if (hollisRec.get('publisher') == '') 
+	                     hollisRec.set('publisher', publisher);
 	                   console.log('showing singlebookview');
 	                   ms.push({ xtype: 'singlebook' });
 	                }
@@ -281,8 +280,11 @@ Ext.define('doweown.controller.Main', {
                           	  }
                             }
                           } else { //single isbn
-                            if (res.mods.identifier.content instanceof String) 
-                              isbnString = 'isbn:' + res.mods.identifier.content.split(' ',1);
+                            if (res.mods.identifier.content instanceof String || 
+                              typeof res.mods.identifier.content == 'string') {
+                              var l = res.mods.identifier.content.split(' ',1);
+                              isbnString = 'isbn:' + l;
+                            }
                             else
                               isbnString = 'isbn:' + res.mods.identifier.content;
                           }
@@ -310,8 +312,13 @@ Ext.define('doweown.controller.Main', {
                              title = res.mods.titleInfo.nonSort + ' ' +title;
                           if (res.mods.titleInfo.subTitle)
                              title = title + ': ' + res.mods.titleInfo.subTitle;
-                          console.log('hollis title: ' + title);                          
-                          author = res.mods.name.namePart;
+                          console.log('hollis title: ' + title); 
+                          if (res.mods.name instanceof Array ) {
+                            author = res.mods.name[0].namePart;
+                          }
+                          else {                         
+                            author = res.mods.name.namePart;
+                          }
                           console.log('hollis author: ' + author);
                           place = res.mods.originInfo.place[1].placeTerm.content;
                           console.log('hollis place: ' + place);
