@@ -15,10 +15,12 @@ Ext.define('doweown.controller.Main', {
 	views: ['doweown.view.Main', 'doweown.view.SingleBookView', 
 	  'doweown.view.WorldCatView'],
         refs: { 'scanBtn': 'main #scanBtn',
-		'mainScreen': 'main #mainscreen'
+		'mainScreen': 'main #mainscreen',
+		'inputField': 'main #isbnField'
         },
     	control: {
-            scanBtn: { tap: 'scanImage' }
+            scanBtn: { tap: 'scanImage' },
+	    inputField: { updateddata: 'readIsbn' }
          }
     },
     
@@ -410,6 +412,18 @@ Ext.define('doweown.controller.Main', {
                Ext.Msg.alert("Whoops! Scanning failed: " + error);
             }
 		);
+    },
+
+
+    readIsbn: function() {
+	var barcode = this.getInputField.getValue();
+	if (mainController.validateBarcode(barcode)) {
+		console.log("valid barcode");
+		mainController.hollisLookup(barcode);
+	}
+	else {
+		Ext.Msg.alert("Invalid barcode " + barcode);
+	}
     }
 
 
