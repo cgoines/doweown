@@ -22,11 +22,15 @@ Ext.define('doweown.view.Main', {
                 	   id: 'mainscreen',
 			   items: [{
 			     	title: 'Do we own this?',
-		    	     	items: [ {
-                        	   xtype: 'button',
-                        	   itemId: 'scanBtn',
-                        	   text: 'Scan Barcode'
-		   	  	}] 
+		    	     	items: [ 
+				  { xtype: 'container', html: 'Scan a book\'s ISBN barcode'},
+			 	  { xtype: 'spacer' },
+				  { xtype: 'button', itemId: 'scanBtn', text: 'Scan Barcode' },
+				  { xtype: 'spacer'},
+				  { xtype: 'container', html: 'Or enter a ISBN number below:'},
+				  { xtype: 'spacer' },
+				  { xtype: 'textfield', itemId: 'isbnField', width: 13}
+				] 
 			    }]
 		  }]
 	
