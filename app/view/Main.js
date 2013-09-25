@@ -23,13 +23,15 @@ Ext.define('doweown.view.Main', {
 			   items: [{
 			     	title: 'Do we own this?',
 		    	     	items: [ 
-				  { xtype: 'container', html: 'Scan a book\'s ISBN barcode'},
-			 	  { xtype: 'spacer' },
-				  { xtype: 'button', itemId: 'scanBtn', text: 'Scan Barcode' },
-				  { xtype: 'spacer'},
-				  { xtype: 'container', html: 'Or enter a ISBN number below:'},
-				  { xtype: 'spacer' },
-				  { xtype: 'textfield', itemId: 'isbnField', label: 'ISBN:', maxLength: 13}
+				  { xtype: 'container', html: '<center><b>Do We Own this?</b></center> is an app that you can use to see if a book is in the Harvard Library. Simply scan a book\'s barcode or enter in its ISBN number to find out!' , padding: '10 5 10 5'},
+				  { xtype: 'spacer' , padding: 10},
+				  { xtype: 'container', html: 'Scan a book\'s ISBN barcode:', padding: '0 10 0 10'},
+			 	  { xtype: 'spacer' , padding: 10},
+				  { xtype: 'button', itemId: 'scanBtn', text: 'Scan Barcode', padding: '0 10 0 10'},
+				  { xtype: 'spacer', padding: 10},
+				  { xtype: 'container', html: 'Or enter a ISBN number below:', padding: '0 10 0 10'},
+				  { xtype: 'spacer', padding: 10 },
+				  { xtype: 'textfield', itemId: 'isbnField', label: 'ISBN:', maxLength: 13, padding: '0 10 5 10'}
 				] 
 			    }]
 		  }]
@@ -37,7 +39,7 @@ Ext.define('doweown.view.Main', {
             },
             {
 		itemId: 'hitlist',
-                title: 'Books',
+                title: 'History',
                 iconCls: 'bookmarks',
 
                 items: [
