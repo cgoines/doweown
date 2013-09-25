@@ -7,7 +7,7 @@ Ext.define('doweown.view.SingleBook', {
            xtype: 'list',
 	   store: 'Biblio',
            pinHeaders: false,
-	   itemTpl: '<img src="{thumb}"/><strong>{title}</strong> - {author} <br>{description}',
+	   itemTpl: '<img src="{thumb}" style="float:left; padding: 5px 5px 4px 5px"/><b>{title}</b><br><i>{author}</i><br>{date}<br>{publisher}<br>{description}',
 	   /*onItemDisclosure: function( record, btn, index ) {
                                 this.getParent().push( {xtype: 'availview'} );
 				this.deselectAll();
