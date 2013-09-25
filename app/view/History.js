@@ -2,7 +2,6 @@ Ext.define('doweown.view.History', {
     extend: 'Ext.List',
     xtype: 'history',
     config: {
-	   //title: 'Search Results',
 	   title: 'Search History',
            xtype: 'list',
 	   store: 'HistoryStore',
