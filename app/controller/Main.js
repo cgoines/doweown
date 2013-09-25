@@ -101,6 +101,7 @@ Ext.define('doweown.controller.Main', {
 	                   if (hollisRec.get('publisher') == '') 
 	                     hollisRec.set('publisher', publisher);
 	                   console.log('showing singlebookview');
+			   ms.setMasked(false);
 	                   ms.push({ xtype: 'singlebook' });
 	                }
 	                else {
@@ -111,25 +112,34 @@ Ext.define('doweown.controller.Main', {
 	                   worldCatRec.set('thumbnail', thumb);
 	                   worldCatRec.set('description', description);
 	                   console.log('showing worldcatview');
+			   ms.setMasked(false);
 	                   ms.push({ xtype : 'worldcatview' });
 	                }
 	                                	
 				}		
 				else { // not found in gbooks, do worldcat lookup
-						//do worldcat lookup
-						console.log('thumbnail not found in gbooks');	
-						if (searchType=='hollis') 
+				  //do worldcat lookup
+				   console.log('thumbnail not found in gbooks');	
+				   if (searchType=='hollis') {
+					ms.setMasked(false);
 	                   		ms.push({ xtype: 'singlebook' });
-	                	else 
+				    }
+	                	    else {
+					ms.setMasked(false);
 	                   		ms.push({ xtype : 'worldcatview' });			
+				    }
 				}
 		    },
 			failure: function(res, request) { //gBooks lookup req failed - try worldcat anyway
 					console.log("gbooks thumbnail lookup call failed");
-					if (searchType=='hollis') 
-	                   	ms.push({ xtype: 'singlebook' });
-	                else 
+					if (searchType=='hollis')  {
+				ms.setMasked(false);
+	                   	ms.push({ xtype: 'singlebook' });	
+				}
+	                else  {
+			   ms.setMasked(false);
 	                   ms.push({ xtype : 'worldcatview' });
+			   }
 			}
 		});
 	
@@ -207,10 +217,12 @@ Ext.define('doweown.controller.Main', {
 	          //ms.push({ xtype : 'worldcatview' });
 	        }
 	        else { //not in worldcat
+			ms.setMasked(false);
 	        	Ext.Msg.alert("Catalog info for ISBN " + barcode + " not found.");
 	        }
 	    },
 	    failure: function(res, request) { //worldcat lookup  failed - goto email form
+		ms.setMasked(false);
 	    	Ext.Msg.alert("Catalog info for ISBN " + barcode + " not found.");	
 	    }
 	    
@@ -250,7 +262,8 @@ Ext.define('doweown.controller.Main', {
 	    if (gBooksStore.getAllCount() > 0) {
         		gBooksStore.removeAll();
          }
-		
+		//show searching window
+		ms.setMasked({ xtype: 'loadmask', message: 'Searching...'});	
 		//new direct hollis call
 		Ext.data.JsonP.request({
                        url: isbnURL,
