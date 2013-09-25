@@ -29,7 +29,7 @@ Ext.define('doweown.view.Main', {
 				  { xtype: 'spacer'},
 				  { xtype: 'container', html: 'Or enter a ISBN number below:'},
 				  { xtype: 'spacer' },
-				  { xtype: 'textfield', itemId: 'isbnField', width: 13}
+				  { xtype: 'textfield', itemId: 'isbnField', label: 'ISBN:', maxLength: 13}
 				] 
 			    }]
 		  }]
