@@ -21,9 +21,9 @@ Ext.define('doweown.view.Main', {
                 	   itemId: 'mainscreen',
                 	   id: 'mainscreen',
 			   items: [{
-			     	title: 'Do we own this?',
+			     	title: 'Do We Own This?',
 		    	     	items: [ 
-				  { xtype: 'container', html: '<center><b>Do We Own this?</b></center> is an app that you can use to see if a book is in the Harvard Library. Simply scan a book\'s barcode or enter in its ISBN number to find out!' , padding: '10 5 10 5'},
+				  { xtype: 'container', html: '<center><b>Do We Own This?</b></center> is an app that you can use to see if a book is in the Harvard Library. Simply scan a book\'s barcode or enter in its ISBN number to find out!' , padding: '10 5 10 5'},
 				  { xtype: 'spacer' , padding: 10},
 				  { xtype: 'container', html: 'Scan a book\'s ISBN barcode:', padding: '0 10 0 10'},
 			 	  { xtype: 'spacer' , padding: 10},
