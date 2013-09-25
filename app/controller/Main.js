@@ -93,7 +93,7 @@ Ext.define('doweown.controller.Main', {
 	                   var hollis = Ext.getStore('Biblio');
 	                   var hollisRec = hollis.getAt(0);
 	                   hollisRec.set('thumb', thumb);
-	                   if (hollisRec.get('description') == '') 
+	                   if (description.length > 0) 
 	                     hollisRec.set('description', description);
 	                   hollisRec.set('date', date);
 	                   if (hollisRec.get('title') == '' ) 
@@ -153,6 +153,7 @@ Ext.define('doweown.controller.Main', {
   	var mainController = this;
 	var worldCatURL = doweown.config.Config.getWorldCatUrl();
 	var gBooksURL = doweown.config.Config.getGoogleBooksUrl();
+	var borrowDirectURL = doweown.config.Config.getBorrowDirectUrl().replace("_ISBN_", barcode);
 	
 	
 	var lookupURL = worldCatURL + barcode;
@@ -188,6 +189,7 @@ Ext.define('doweown.controller.Main', {
 	            'date': date,
 	            'publisher': publisher,
 	            'ISBN': ISBN,
+		    'borrowDirectUrl': borrowDirectURL,
 	            'library': library
 	          });
 	          console.log('worldcat record created');
