@@ -6,10 +6,11 @@ Ext.define('doweown.model.WorldCatBooks', {
                 {name: 'author',        type: 'string', mapping: 'author'},
                 {name: 'publisher',     type: 'string', mapping: 'publisher'},
 		{name: 'date',          type: 'string', mapping: 'date'},
-		{name: 'thumbnail',     type: 'string', mapping: 'thumbnail'},
+		{name: 'thumbnail',     type: 'string', mapping: 'thumbnail', defaultValue: doweown.config.Config.getNoThumbnaillUrl() },
 		{name: 'ISBN', mapping: 'ISBN'},
 		{name: 'totalLibCount',	type: 'string', mapping: 'totalLibCount'},
-		{name: 'library', mapping: 'library'}
+		{name: 'library', mapping: 'library'},
+		{name: 'description', type: 'string'}
         ]
     }
 });
