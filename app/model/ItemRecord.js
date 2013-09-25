@@ -1,7 +1,7 @@
 Ext.define('doweown.model.ItemRecord', {
     extend: 'Ext.data.Model',
     config: {
-	belongsTo: 'Items',
+	belongsTo: 'Collections',
         fields: [
                 {name: 'isavail',     type: 'string', mapping: 'isavail'},
                 {name: 'call',        type: 'string', mapping: 'call'},
