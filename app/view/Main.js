@@ -46,7 +46,7 @@ Ext.define('doweown.view.Main', {
                     {
                         docked: 'top',
                         xtype: 'titlebar',
-                        title: 'Getting Started'
+                        title: 'History'
                     },
                     {
                         xtype: 'video',
