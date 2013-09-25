@@ -27,14 +27,14 @@ Ext.application({
 	'doweown.config.Config'
     ],
 
-    views: [ 'Main', 'SingleBook', 'AvailBook', 'SingleBookView', 'AvailView', WorldCatView' ],
+    views: [ 'Main', 'SingleBook', 'AvailBook', 'SingleBookView', 'AvailView', 'WorldCatView' ],
 
     models: [ 'Isbn','Avail','Availability', 'Branch','Repository','Collection', 
 	,'ItemRecord','NoItems','HoldTag','Gbooks','AvailVal', 'WorldCatBooks' ],
 
     controllers: ['Main'],
 
-    stores: [ 'AvailStore', 'Biblio', 'BranchStore', 'WorldCatStore' ],
+    stores: [ 'AvailStore', 'Biblio', 'BranchStore', 'WorldCatStore', 'GbooksStore' ],
 
     icon: {
         '57': 'resources/icons/Icon.png',
