@@ -9,7 +9,7 @@ Ext.define('doweown.model.Isbn', {
 		{name: 'publisher',     type: 'string'},
 		{name: 'hollisId',	type: 'string'},
                 {name: 'description',   type: 'string'},
-                {name: 'thumb',         type: 'string', defaultValue: doweown.config.Config.getNoThumbnaillUrl() }
+                {name: 'thumb',         type: 'string', defaultValue: doweown.config.Config.getNoThumbnailUrl() }
         ]
     }
 });
