@@ -6,7 +6,6 @@ Ext.define('doweown.controller.Main', {
 	'Ext.navigation.View',
 	'doweown.model.Isbn',
 	'doweown.store.Biblio',
-	'doweown.store.AvailStore',
 	'doweown.store.BranchStore',
 	'doweown.store.WorldCatStore'
     ],
