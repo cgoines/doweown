@@ -5,9 +5,14 @@ Ext.define('doweown.controller.Main', {
 	'Ext.data.proxy.JsonP',
 	'Ext.navigation.View',
 	'doweown.model.Isbn',
+	'doweown.model.WorldCatBooks',
+	'doweown.model.History',
+	'doweown.model.Prefs',
 	'doweown.store.Biblio',
 	'doweown.store.BranchStore',
-	'doweown.store.WorldCatStore'
+	'doweown.store.WorldCatStore',
+	'doweown.store.HistoryStore',
+	'doweown.store.PrefsStore'
     ],
 
     config: {
@@ -89,6 +94,12 @@ Ext.define('doweown.controller.Main', {
 	                console.log('description: ' + description);
 	                //return {thumb: thumb, description: description};
 	                //update thumbs
+			var historyStore = Ext.getStore('HistoryStore');
+			var idx = historyStore.findExact('barcode', barcode);
+                  	if ( idx > -1 ) {
+                        	var historyRec = historyStore.getAt(idx);
+				historyRec.set('thumbnail', thumb);
+                  	}
 	                if (searchType=='hollis') {
 	                   var hollis = Ext.getStore('Biblio');
 	                   var hollisRec = hollis.getAt(0);
@@ -215,6 +226,17 @@ Ext.define('doweown.controller.Main', {
               console.log('isbnString: ' + isbnString);
               gBooksURL = gBooksURL + isbnString;
               console.log('gbooks url: ' + gBooksURL);
+		  var historyRec = Ext.create('doweown.model.History', {
+			'title': title, 
+			'author': author,
+			'publisher': publisher,
+			'date': date,
+			'barcode': barcode
+		  });
+		  var historyStore = Ext.getStore('HistoryStore');
+		  if ( historyStore.findExact('barcode', barcode) === -1 ) {
+			historyStore.add(historyRec);
+		  }
 	          mainController.googleLookup(gBooksURL,'worldcat'); 
 	          //ms.push({ xtype : 'worldcatview' });
 	        }
@@ -383,6 +405,17 @@ Ext.define('doweown.controller.Main', {
                                   BranchStore.load();
 								  BranchStore.sync();
                                	  // lookup google for thumbnail & switch to result view
+					var historyRec = Ext.create('doweown.model.History', {
+                        			'title': title, 
+                        			'author': author,
+                        			'publisher': publisher,
+                        			'date': date,
+                        			'barcode': barcode
+                  			});
+                  			var historyStore = Ext.getStore('HistoryStore');
+                  			if ( historyStore.findExact('barcode', barcode) === -1 ) {
+                        			historyStore.add(historyRec);
+                  			}
                                	  mainController.googleLookup(gBooksURL,'hollis'); 
 								  //ms.push({ xtype : 'singlebook' });	
                                 }
