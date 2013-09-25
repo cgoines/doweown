@@ -20,7 +20,7 @@ Ext.define('doweown.controller.Main', {
         },
     	control: {
             scanBtn: { tap: 'scanImage' },
-	    inputField: { updateddata: 'readIsbn' }
+	    inputField: { action: 'readIsbn' }
          }
     },
     
@@ -416,13 +416,16 @@ Ext.define('doweown.controller.Main', {
 
 
     readIsbn: function() {
-	var barcode = this.getInputField.getValue();
-	if (mainController.validateBarcode(barcode)) {
+	var barcode = this.getInputField().getValue();
+	var mainController = this;
+	if (barcode.length > 0) {
+	  if (mainController.validateBarcode(barcode)) {
 		console.log("valid barcode");
 		mainController.hollisLookup(barcode);
-	}
-	else {
-		Ext.Msg.alert("Invalid barcode " + barcode);
+	  }
+	  else {
+	   	Ext.Msg.alert("Invalid barcode " + barcode);
+	  }
 	}
     }
 
