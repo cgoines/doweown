@@ -4,10 +4,10 @@ Ext.define('doweown.store.HistoryStore', {
 	requires: ['Ext.data.proxy.LocalStorage'],
 	config: {
           model: 'doweown.model.History',
-          autoLoad: true
-          /*proxy: {
+          autoLoad: true,
+          proxy: {
             type: 'localstorage'
-          }*/
+          }
 
 	}
 });
