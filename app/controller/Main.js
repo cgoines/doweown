@@ -17,14 +17,19 @@ Ext.define('doweown.controller.Main', {
 
     config: {
 	views: ['doweown.view.Main', 'doweown.view.SingleBookView', 
-	  'doweown.view.WorldCatView'],
+	  'doweown.view.WorldCatView', 'doweown.view.History'],
         refs: { 'scanBtn': 'main #scanBtn',
 		'mainScreen': 'main #mainscreen',
-		'inputField': 'main #isbnField'
+		'inputField': 'main #isbnField',
+		'historyList': 'main #history',
+		'historyNav': '#historynav',
+		//'singleBookList': '#singleBookList'
         },
     	control: {
             scanBtn: { tap: 'scanImage' },
-	    inputField: { action: 'readIsbn' }
+	    inputField: { action: 'readIsbn' },
+	    //singleBookList: { itemtap: 'showAvailability' },
+	    historyList: { itemtap: 'searchFromHistory' }
          }
     },
     
@@ -62,14 +67,15 @@ Ext.define('doweown.controller.Main', {
     },
 
 	//get thumb and optional descriptive blurb info
-	googleLookup: function(gBooksUrl, searchType) {
-		var ms = this.getMainScreen();
+	googleLookup: function(gBooksUrl, searchType, barcode, navListWindow) {
+		var ms = navListWindow;
+		var hl = this.getHistoryList();
 		var title,thumb,description,date,publisher;
 		console.log('google lookup');
 		console.log('gbooks called url: ' + gBooksUrl);
 		Ext.data.JsonP.request({
         	url: gBooksUrl,
-			disableCaching: true,
+			disableCaching: false,
             success: function(res, request) {
                 	// Get the gbooks data from the json object result
                 console.log('google jsonp call successful');
@@ -99,6 +105,11 @@ Ext.define('doweown.controller.Main', {
                   	if ( idx > -1 ) {
                         	var historyRec = historyStore.getAt(idx);
 				historyRec.set('thumbnail', thumb);
+				historyRec.set('date', date);
+				if (historyRec.get('publisher') == '')
+				  historyRec.set('publisher', publisher);
+				console.log('history has ' + historyStore.getAllCount() + ' items');
+				hl.refresh();
                   	}
 	                if (searchType=='hollis') {
 	                   var hollis = Ext.getStore('Biblio');
@@ -158,10 +169,11 @@ Ext.define('doweown.controller.Main', {
 	
 	},
    
-    worldCatLookup: function(barcode) {
+    worldCatLookup: function(barcode, navListWindow) {
   	console.log('commencing worldcat lookup for isbn: ' + barcode);
-  	var ms = this.getMainScreen();
+  	var ms = navListWindow;
   	var mainController = this;
+	var hl = mainController.getHistoryList();
 	var worldCatURL = doweown.config.Config.getWorldCatUrl();
 	var gBooksURL = doweown.config.Config.getGoogleBooksUrl();
 	var borrowDirectURL = doweown.config.Config.getBorrowDirectUrl().replace("_ISBN_", barcode);
@@ -175,7 +187,7 @@ Ext.define('doweown.controller.Main', {
     }
 	Ext.data.JsonP.request({
 	    url: lookupURL,
-	    disableCaching: true,
+	    disableCaching: false,
 	    callbackKey: 'callback',
 	    params: {
         	wskey: doweown.config.Config.getWorldCatDevKey(),
@@ -236,8 +248,9 @@ Ext.define('doweown.controller.Main', {
 		  var historyStore = Ext.getStore('HistoryStore');
 		  if ( historyStore.findExact('barcode', barcode) === -1 ) {
 			historyStore.add(historyRec);
+			hl.refresh();
 		  }
-	          mainController.googleLookup(gBooksURL,'worldcat'); 
+	          mainController.googleLookup(gBooksURL,'worldcat', barcode, ms); 
 	          //ms.push({ xtype : 'worldcatview' });
 	        }
 	        else { //not in worldcat
@@ -257,12 +270,12 @@ Ext.define('doweown.controller.Main', {
     },
 	
 
-     hollisLookup: function(barcode) {
+     hollisLookup: function(barcode, navListWindow) {
 		//presto search goes here
 		var mainController = this;
+		var hl = mainController.getHistoryList();
 		var gBooksURL = doweown.config.Config.getGoogleBooksUrl(); // + 'isbn:' + barcode;
 		console.log('commencing hollis lookup');
-		var ms = this.getMainScreen();
 		var availURL;
 		var isbnURL = doweown.config.Config.getHollisIsbnUrl() + barcode;
 		var similarURL = doweown.config.Config.getHollisSimilarUrl();
@@ -287,12 +300,12 @@ Ext.define('doweown.controller.Main', {
         		gBooksStore.removeAll();
          }
 		//show searching window
-		ms.setMasked({ xtype: 'loadmask', message: 'Searching...'});	
+		navListWindow.setMasked({ xtype: 'loadmask', message: 'Searching...'});	
 		//new direct hollis call
 		Ext.data.JsonP.request({
                        url: isbnURL,
                        callbackKey: 'jsonp',
-                       disableCaching: true,
+                       disableCaching: false,
                        success: function(res, request) {
 			           console.log("hollis lookup");
                          // Get the isbn data from the json object result
@@ -375,7 +388,7 @@ Ext.define('doweown.controller.Main', {
                           Ext.data.JsonP.request({
                      	      url: availURL,
                               callbackKey: 'jsonp',
-                              disableCaching: true,
+                              disableCaching: false,
                               success: function(res, request) {
                                 // Get the availability data from the json object result
                                 if (res.availability) {
@@ -388,6 +401,7 @@ Ext.define('doweown.controller.Main', {
 						             'author':   author,
 						             'date':     date,
 						             'place':    place,
+							     'isbn': 	barcode,
 						             'publisher': publisher,
 						             'hollisId': hollisId     
 						          });						
@@ -415,8 +429,9 @@ Ext.define('doweown.controller.Main', {
                   			var historyStore = Ext.getStore('HistoryStore');
                   			if ( historyStore.findExact('barcode', barcode) === -1 ) {
                         			historyStore.add(historyRec);
+						hl.refresh();
                   			}
-                               	  mainController.googleLookup(gBooksURL,'hollis'); 
+                               	  mainController.googleLookup(gBooksURL,'hollis', barcode, navListWindow); 
 								  //ms.push({ xtype : 'singlebook' });	
                                 }
                               }
@@ -427,7 +442,7 @@ Ext.define('doweown.controller.Main', {
 			   			 //do worldcat lookup
 			   			 //Ext.Msg.alert(barcode + " not in hollis. sorry.");
 			   			 console.log(barcode + " not in hollis. sorry.");
-			   			 mainController.worldCatLookup(barcode);
+			   			 mainController.worldCatLookup(barcode, navListWindow);
 					   }
         			});
 		
@@ -448,7 +463,7 @@ Ext.define('doweown.controller.Main', {
 			    {
 			    	if (mainController.validateBarcode(barcode)) {
 			    		console.log("valid barcode");
-                		mainController.hollisLookup(barcode); 
+                		mainController.hollisLookup(barcode, mainController.getMainScreen()); 
                 	}
                 	else {
                 		Ext.Msg.alert("Invalid barcode " + barcode);
@@ -468,15 +483,28 @@ Ext.define('doweown.controller.Main', {
 	if (barcode.length > 0) {
 	  if (mainController.validateBarcode(barcode)) {
 		console.log("valid barcode");
-		mainController.hollisLookup(barcode);
+		mainController.hollisLookup(barcode, mainController.getMainScreen());
 	  }
 	  else {
 	   	Ext.Msg.alert("Invalid barcode " + barcode);
 	  }
 	}
-    }
+    },
+
+
+    
+    searchFromHistory: function(list, index, target, record) {
+	var mainController = this;
+	list.deselectAll();
+	mainController.hollisLookup(record.get('barcode'), mainController.getHistoryNav());
+     },
 
 
 
+     showAvailability: function() {
+	var sb = this.getSingleBookList();
+ 	sb.getParent().push( {xtype: 'availview'} );
+        sb.deselectAll();
+     }
 
 });
