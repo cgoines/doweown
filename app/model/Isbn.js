@@ -7,6 +7,7 @@ Ext.define('doweown.model.Isbn', {
                 {name: 'date',          type: 'string'},
 		{name: 'place',         type: 'string'},
 		{name: 'publisher',     type: 'string'},
+		{name: 'isbn',		type: 'string'},
 		{name: 'hollisId',	type: 'string'},
                 {name: 'description',   type: 'string'},
                 {name: 'thumb',         type: 'string', defaultValue: doweown.config.Config.getNoThumbnailUrl() }
