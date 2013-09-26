@@ -117,7 +117,7 @@ Ext.define('doweown.controller.Main', {
 	                   var hollis = Ext.getStore('Biblio');
 	                   var hollisRec = hollis.getAt(0);
 	                   hollisRec.set('thumb', thumb);
-	                   if (description.length > 0) 
+	                   if (description)
 	                     hollisRec.set('description', description);
 	                   hollisRec.set('date', date);
 	                   if (hollisRec.get('title') == '' ) 
@@ -355,7 +355,7 @@ Ext.define('doweown.controller.Main', {
                           hollisId = res.mods.recordInfo.recordIdentifier.substring(0,9);
                           console.log('hollis id is: ' + hollisId);
                                                                             
-                          if (res.mods.titleInfo.title instanceof String) 
+                          if ( typeof res.mods.titleInfo.title === 'string') 
                           	title = res.mods.titleInfo.title;
                           else if (res.mods.titleInfo instanceof Array) 
                           	title = res.mods.titleInfo[0].title;
