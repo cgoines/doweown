@@ -50,7 +50,7 @@ Ext.define('doweown.view.Main', {
 			id: 'historynav',
 			title: 'History',
 			items: [
-				{ xtype: 'history', id: 'history', itemId: 'history' }
+				{ xtype: 'history'}
 			]
                     
                }]
