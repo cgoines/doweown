@@ -22,7 +22,7 @@ Ext.define('doweown.controller.Main', {
 		'mainScreen': 'main #mainscreen',
 		'inputField': 'main #isbnField',
 		'historyList': 'main #history',
-		'historyNav': '#historynav',
+		'historyNav': '#historynav'
 		//'singleBookList': '#singleBookList'
         },
     	control: {
@@ -104,6 +104,8 @@ Ext.define('doweown.controller.Main', {
 			var idx = historyStore.findExact('barcode', barcode);
                   	if ( idx > -1 ) {
                         	var historyRec = historyStore.getAt(idx);
+				if (historyRec.get('title') == '' )
+                              	   historyRec.set('title', title);
 				historyRec.set('thumbnail', thumb);
 				historyRec.set('date', date);
 				if (historyRec.get('publisher') == '')
