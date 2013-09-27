@@ -83,9 +83,8 @@ Ext.define('doweown.controller.Main', {
 				if (res.totalItems > 0) {
 					gBooksResult = true;
 				  	console.log("google worked");
-				  	thumb = res.items[0].volumeInfo.imageLinks.smallThumbnail
-				  	if ( thumb == null ) {
-				  	  thumb = 'http://books.google.com/googlebooks/images/no_cover_thumb.gif';
+				  	if ( res.items[0].volumeInfo.imageLinks ) {
+				  	  thumb = res.items[0].volumeInfo.imageLinks.smallThumbnail;
 				  	}
 
 				  	console.log('thumb: ' + thumb);
@@ -116,10 +115,12 @@ Ext.define('doweown.controller.Main', {
 	                if (searchType=='hollis') {
 	                   var hollis = Ext.getStore('Biblio');
 	                   var hollisRec = hollis.getAt(0);
-	                   hollisRec.set('thumb', thumb);
+			   if (thumb)
+	                     hollisRec.set('thumb', thumb);
 	                   if (description)
 	                     hollisRec.set('description', description);
-	                   hollisRec.set('date', date);
+			   if (date)
+	                     hollisRec.set('date', date);
 	                   if (hollisRec.get('title') == '' ) 
 	                      hollisRec.set('title', title);
 	                   if (hollisRec.get('publisher') == '') 
@@ -133,8 +134,10 @@ Ext.define('doweown.controller.Main', {
 	                   console.log("worldcat store loaded with " + worldCat.getAllCount() + " records");
 	                   var worldCatRec = worldCat.getAt(0);
 	                   console.log("updating world cat record: " + worldCatRec.get('title') );
-	                   worldCatRec.set('thumbnail', thumb);
-	                   worldCatRec.set('description', description);
+			   if (thumb)
+	                      worldCatRec.set('thumbnail', thumb);
+			   if (description)
+	                     worldCatRec.set('description', description);
 	                   console.log('showing worldcatview');
 			   ms.setMasked(false);
 	                   ms.push({ xtype : 'worldcatview' });
