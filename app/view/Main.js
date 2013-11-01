@@ -54,7 +54,55 @@ Ext.define('doweown.view.Main', {
 			]
                     
                }]
-            }
+            },
+	    {
+		itemId: 'prefs',
+		title: 'Prefs',
+		iconCls: 'settings',
+		styleHtmlContent: true,
+		layout: 'fit',
+		
+		items: [{
+			xtype: 'formpanel',
+			itemId: 'prefsform',
+			items: [
+			  { xtype: 'titlebar', title: 'E-mail Settings', docked: 'top' }, 
+		   	  { xtype: 'fieldset',
+	            	    items: [		
+				{xtype: 'textfield', name: 'firstname', label: 'First Name'},
+				{xtype: 'textfield', name: 'lastname', label: 'Last Name'},
+				{xtype: 'textfield', name: 'email', label: 'E-mail'},
+				{xtype: 'textfield', name: 'library', label: 'Library'},
+                                {xtype: 'textfield', name: 'school', label: 'School/Unit'},
+                                {xtype: 'selectfield', name: 'affiliation', label: 'Affiliation',
+				 options: [
+				   {text: 'Harvard Faculty', value: 'Harvard Faculty' },
+				   {text: 'Harvard Undergraduate Student', value: 'Harvard Undergraduate Student' },
+				   {text: 'Harvard Graduate Student', value: 'Harvard Graduate Student' },
+                                   {text: 'Harvard Staff', value: 'Harvard Staff' },
+				   {text: 'Harvard Alumnus/a', value: 'Harvard Alumnus/a' },
+                                   {text: 'Harvard Other', value: 'Harvard Other' },
+                                   {text: 'Other Institution Faculty', value: 'Other Institution Faculty' },
+                                   {text: 'Other Institution Undergraduate Student', value: 'Other Institution Undergraduate Student' },
+				   {text: 'Other Institution Graduate Student', value: 'Other Institution Graduate Student' },
+                                   {text: 'High School Student', value: 'High School Student' },
+				   {text: 'Independent Researcher', value: 'Independent Researcher' },
+                                   {text: 'Other', value: 'Other' }
+				 ]
+				}
+			   ]
+		   	  },
+			  { xtype: 'toolbar', 
+			    layout: { pack: 'center' },
+			    ui: 'plain',
+			    items: [
+				{xtype: 'button', text: 'Reset', ui: 'decline', itemId: 'resetBtn' },
+				{xtype: 'button', text: 'Save', ui: 'confirm', itemId: 'saveBtn' }
+			    ]
+			  }
+			]
+		}]
+	     }
         ]
     }
 });
