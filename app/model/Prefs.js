@@ -6,8 +6,8 @@ Ext.define('doweown.model.Prefs', {
                 {name: 'lastname',      type: 'string'},
                 {name: 'email',         type: 'string'},
 		{name: 'library',       type: 'string'},
-		{name: 'affiliation',	type: 'string'},
-		{name: 'affiliationType', type: 'string'}
+		{name: 'school',	type: 'string'},
+		{name: 'affilation', type: 'string'}
         ]
     }
 });
