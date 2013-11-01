@@ -27,7 +27,7 @@ Ext.define('doweown.view.Main', {
 				  { xtype: 'spacer' , padding: 10},
 				  { xtype: 'container', html: 'Scan a book\'s ISBN barcode:', padding: '0 10 0 10'},
 			 	  { xtype: 'spacer' , padding: 10},
-				  { xtype: 'button', itemId: 'scanBtn', text: 'Scan Barcode', padding: '0 10 0 10'},
+				  { xtype: 'button', itemId: 'scanBtn', text: 'Press Button to Scan', padding: '0 10 0 10'},
 				  { xtype: 'spacer', padding: 10},
 				  { xtype: 'container', html: 'Or enter a ISBN number below:', padding: '0 10 0 10'},
 				  { xtype: 'spacer', padding: 10 },
