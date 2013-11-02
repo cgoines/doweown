@@ -127,7 +127,7 @@ Ext.define('doweown.view.Main', {
 				'Chip Goines, Digital Library Software Engineer, Library Technology Services<br>' + 
 				'Donna Viscuglia, Senior Cataloger, ITS<br>' + 
 				'Mariko Honshuku, Librarian for Japanese Law, Law Library<p/>' +
-                      		'<p>Produced by: The Harvard Library Lab, <a href="https://osc.hul.harvard.edu/liblab">https://osc.hul.harvard.edu/liblab</a></p>' +
+                      		'<p>Produced by: The Harvard Library Lab, <a href="https://osc.hul.harvard.edu/liblab" onclick="window.open(this.href,\'_system\'); return false;" >https://osc.hul.harvard.edu/liblab</a></p>' +
                       		'License: GNU GPL v3.0' }
 		]
 
