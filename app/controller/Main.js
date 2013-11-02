@@ -246,7 +246,8 @@ Ext.define('doweown.controller.Main', {
 	            'totalLibCount': totalLibCount,
 		        'borrowDirectUrl': borrowDirectURL,
 	            'library': library,
-	            'mailto': 'mailto:tma@law.harvard.edu,chip.goines@gmail.com?subject=Patron%20Request&' +
+	            'mailto': 'mailto:' + doweown.config.Config.getEmailTo() + 
+	              '?subject=' + encodeURIComponent(doweown.config.Config.getEmailSubject()) + '&' +
 	              'body=Title:%20' + encodeURIComponent(title) + '%0A' +
 	              'Author:%20' + encodeURIComponent(author) + '%0A' +
 	              'Date:%20' + encodeURIComponent(date) + '%0A' +
