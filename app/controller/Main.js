@@ -250,7 +250,7 @@ Ext.define('doweown.controller.Main', {
 	              'Author:%20' + encodeURIComponent(author) + '%0A' +
 	              'Date:%20' + encodeURIComponent(date) + '%0A' +
 	              'Publisher:%20' + encodeURIComponent(publisher) + '%0A' +
-	              'ISBN:%20' + encodeURIComponent(ISBN) + '%0A' +
+	              'ISBN(s):%20' + encodeURIComponent(ISBN) + '%0A' +
 	              '------------------------%0A' +
 	              'Requester information:%0A%0A' +
 	              'Name:%20' + encodeURIComponent(prefFirstName) + '%20' + encodeURIComponent(prefLastName) +'%0A' +
