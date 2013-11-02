@@ -217,6 +217,7 @@ Ext.define('doweown.controller.Main', {
 	          var ISBN = res.ISBN;
 	          var totalLibCount = res.totalLibCount;
 	          var library = res.library;
+	          var OCLCnumber = res.OCLCnumber;
 	          console.log('libraries: ' + library);
 	          
 	          var prefsStore = Ext.getStore('PrefsStore');
@@ -237,6 +238,14 @@ Ext.define('doweown.controller.Main', {
      			prefAffiliation = pref.get('affiliation');
      		  }
 	          
+	          var emailISBN = '';
+	          if (ISBN instanceof Array ) {
+	             for ( var i in ISBN ) {
+	             	emailISBN = emailISBN + ISBN[i] + '%0A';
+	             }
+	          } else {
+	          	emailISBN = barcode;
+	          }
 	          var worldCatRec = Ext.create('doweown.model.WorldCatBooks', {
 	            'title': title,
 	            'author': author,
@@ -252,7 +261,8 @@ Ext.define('doweown.controller.Main', {
 	              'Author:%20' + encodeURIComponent(author) + '%0A' +
 	              'Date:%20' + encodeURIComponent(date) + '%0A' +
 	              'Publisher:%20' + encodeURIComponent(publisher) + '%0A' +
-	              'ISBN:%20' + barcode + '%0A' +
+	              'ISBN:%20' + emailISBN +
+	              'OCLC Number:%20' + OCLCnumber + '%0A' +
 	              '------------------------%0A' +
 	              'Requester information:%0A%0A' +
 	              'Name:%20' + encodeURIComponent(prefFirstName) + '%20' + encodeURIComponent(prefLastName) +'%0A' +
