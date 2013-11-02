@@ -11,7 +11,8 @@ Ext.define('doweown.model.WorldCatBooks', {
 		{name: 'totalLibCount',	type: 'string', mapping: 'totalLibCount'},
 		{name: 'borrowDirectUrl', type: 'string', defaultValue: doweown.config.Config.getBorrowDirectDefaultUrl() },
 		{name: 'library', mapping: 'library'},
-		{name: 'description', type: 'string'}
+		{name: 'description', type: 'string'},
+		{name: 'mailto', type: 'string'}
         ]
     }
 });
