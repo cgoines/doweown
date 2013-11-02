@@ -107,6 +107,23 @@ Ext.define('doweown.view.Main', {
 			  }
 			]
 		}]
+	     },
+	     {
+		itemId: 'about',
+                title: 'About',
+                iconCls: 'info',
+                layout: 'fit',
+		
+		items: [
+			{ xtype: 'titlebar', title: 'About', docked: 'top' },
+			{ xtype: 'spacer'},
+			{ xtype: 'panel', styleHtmlContent: true, 
+			  html: '<p><strong>Do we own this?</strong></p>' +
+                      		'<p>Version: 0.1</p>' +
+                      		'<p>Author: The Harvard Library, <a href="http://library.harvard.edu">http://library.harvard.edu</a></p>' +
+                      		'<p>License: GNU GPL v3.0</p>' }
+		]
+
 	     }
         ]
     }
