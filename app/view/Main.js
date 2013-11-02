@@ -1,18 +1,22 @@
 Ext.define('doweown.view.Main', {
     extend: 'Ext.tab.Panel',
     xtype: 'main',
+    itemId: 'tabBar',
+    id: 'tabBar',
     requires: [
         'Ext.TitleBar',
+	'Ext.form.Panel',
+	'Ext.form.FieldSet',
+	'Ext.field.Select',
         'doweown.view.History'
     ],
     config: {
         tabBarPosition: 'bottom',
-
         items: [
             {
                 title: 'Scan',
                 iconCls: 'search',
-                styleHtmlContent: true,
+                //styleHtmlContent: false,
                 scrollable: false,
 		layout: 'fit',
 
@@ -41,7 +45,7 @@ Ext.define('doweown.view.Main', {
 		itemId: 'hitlist',
                 title: 'History',
                 iconCls: 'bookmarks',
-		styleHtmlContent: true,
+		//styleHtmlContent: false,
 		layout: 'fit',
 
                items: [{
@@ -59,22 +63,21 @@ Ext.define('doweown.view.Main', {
 		itemId: 'prefs',
 		title: 'Prefs',
 		iconCls: 'settings',
-		styleHtmlContent: true,
 		layout: 'fit',
 		
 		items: [{
 			xtype: 'formpanel',
 			itemId: 'prefsform',
 			items: [
-			  { xtype: 'titlebar', title: 'E-mail Settings', docked: 'top' }, 
+			  { xtype: 'titlebar', title: 'Settings', docked: 'top' }, 
 		   	  { xtype: 'fieldset',
-			    instructions: 'Enter your email settings here.',
+			    title: 'Enter your email settings here.',
 	            	    items: [		
-				{xtype: 'textfield', name: 'firstname', label: 'First Name'},
-				{xtype: 'textfield', name: 'lastname', label: 'Last Name'},
+				{xtype: 'textfield', name: 'firstname', label: 'First <br>Name'},
+				{xtype: 'textfield', name: 'lastname', label: 'Last <br>Name'},
 				{xtype: 'textfield', name: 'email', label: 'E-mail'},
 				{xtype: 'textfield', name: 'library', label: 'Library'},
-                                {xtype: 'textfield', name: 'school', label: 'School/Unit'},
+                                {xtype: 'textfield', name: 'school', label: 'School /<br>Unit'},
                                 {xtype: 'selectfield', name: 'affiliation', label: 'Affiliation',
 				 options: [
 				   {text: 'Harvard Faculty', value: 'Harvard Faculty' },
@@ -97,8 +100,11 @@ Ext.define('doweown.view.Main', {
 			    layout: { pack: 'center' },
 			    ui: 'plain',
 			    items: [
+				{ xtype: 'spacer'},
 				{xtype: 'button', text: 'Reset', ui: 'decline', itemId: 'resetBtn' },
-				{xtype: 'button', text: 'Save', ui: 'confirm', itemId: 'saveBtn' }
+				{ xtype: 'spacer'},
+				{xtype: 'button', text: 'Save', ui: 'confirm', itemId: 'saveBtn' },
+				{ xtype: 'spacer'}
 			    ]
 			  }
 			]
