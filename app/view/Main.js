@@ -119,8 +119,14 @@ Ext.define('doweown.view.Main', {
 			{ xtype: 'spacer'},
 			{ xtype: 'panel', styleHtmlContent: true, 
 			  html: '<p><strong>Do we own this?</strong></p>' +
-                      		'<p>Version: 0.1</p>' +
-                      		'<p>Author: The Harvard Library, <a href="http://library.harvard.edu">http://library.harvard.edu</a></p>' +
+				'A mobile app for library collection development' +
+                      		'<p>Version: 0.9</p>' +
+				'<p><i>Project Team:</i><br>' +
+				'Thomas Ma, Bibliographic Services Manager, Information and Technical Services<br>' +
+				'Chip Goines, Digital Library Software Engineer, Library Technology Services<br>' + 
+				'Donna Viscuglia, Senior Cataloger, ITS<br>' + 
+				'Mariko Honshuku, Librarian for Japanese Law, Law Library<p/>' +
+                      		'<p>Produced by: The Harvard Library Lab, <a href="https://osc.hul.harvard.edu/liblab">https://osc.hul.harvard.edu/liblab</a></p>' +
                       		'<p>License: GNU GPL v3.0</p>' }
 		]
 
