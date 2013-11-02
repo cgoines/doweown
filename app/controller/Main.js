@@ -243,6 +243,7 @@ Ext.define('doweown.controller.Main', {
 	            'date': date,
 	            'publisher': publisher,
 	            'ISBN': ISBN,
+	            'totalLibCount': totalLibCount,
 		        'borrowDirectUrl': borrowDirectURL,
 	            'library': library,
 	            'mailto': 'mailto:tma@law.harvard.edu,chip.goines@gmail.com?subject=Do%20We%20Own%20This%20Request&' +
