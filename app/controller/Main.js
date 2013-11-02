@@ -22,14 +22,21 @@ Ext.define('doweown.controller.Main', {
 		'mainScreen': 'main #mainscreen',
 		'inputField': 'main #isbnField',
 		'historyList': 'main #history',
-		'historyNav': '#historynav'
+		'historyNav': '#historynav',
+		'resetBtn': 'main #resetBtn',
+		'saveBtn': 'main #saveBtn',
+		'prefsForm': 'main #prefsform',
+		'tabBar': 'main'
 		//'singleBookList': '#singleBookList'
         },
     	control: {
             scanBtn: { tap: 'scanImage' },
 	    inputField: { action: 'readIsbn' },
 	    //singleBookList: { itemtap: 'showAvailability' },
-	    historyList: { itemtap: 'searchFromHistory' }
+	    historyList: { itemtap: 'searchFromHistory' },
+	    	saveBtn: { tap: 'savePrefs' },
+	    	resetBtn: { tap: 'resetPrefs'},
+	    	prefsForm: { show: 'loadPrefs'}
          }
     },
     
@@ -217,7 +224,7 @@ Ext.define('doweown.controller.Main', {
 	            'date': date,
 	            'publisher': publisher,
 	            'ISBN': ISBN,
-		    'borrowDirectUrl': borrowDirectURL,
+		        'borrowDirectUrl': borrowDirectURL,
 	            'library': library
 	          });
 	          console.log('worldcat record created');
@@ -260,12 +267,12 @@ Ext.define('doweown.controller.Main', {
 	        }
 	        else { //not in worldcat
 			ms.setMasked(false);
-	        	Ext.Msg.alert("Catalog info for ISBN " + barcode + " not found.");
+	        	Ext.Msg.alert('ISBN Not Found', "Catalog info for ISBN " + barcode + " not found.");
 	        }
 	    },
 	    failure: function(res, request) { //worldcat lookup  failed - goto email form
 		ms.setMasked(false);
-	    	Ext.Msg.alert("Catalog info for ISBN " + barcode + " not found.");	
+	    	Ext.Msg.alert('ISBN Not Found',"Catalog info for ISBN " + barcode + " not found.");	
 	    }
 	    
 	
@@ -370,20 +377,41 @@ Ext.define('doweown.controller.Main', {
                              title = title + ': ' + res.mods.titleInfo.subTitle;
                           console.log('hollis title: ' + title); 
                           if (res.mods.name instanceof Array ) {
-                            author = res.mods.name[0].namePart;
+                          	if ( res.mods.name[0].namePart instanceof Array ) {
+                            author = res.mods.name[0].namePart[0];
+                            } else {
+                            	 author = res.mods.name[0].namePart;
+                        	}
                           }
                           else {                         
                             author = res.mods.name.namePart;
                           }
                           console.log('hollis author: ' + author);
-                          place = res.mods.originInfo.place[1].placeTerm.content;
+                          
+                          var originInfo;
+                          if (res.mods.originInfo instanceof Array) {
+                          	originInfo = res.mods.originInfo[0];
+                          }
+                          else {
+                          	originInfo = res.mods.originInfo;
+                          }
+                          
+                          if ( originInfo.place instanceof Array) {
+                          	place = originInfo.place[1].placeTerm.content;
+                          } else {
+                          	place = 'unknown';
+                          }
                           console.log('hollis place: ' + place);
-                          publisher = res.mods.originInfo.publisher;
+                          if ( originInfo.publisher ) {
+                          	publisher = originInfo.publisher;
+                          } else {
+                           publisher = "Publisher unknown";
+                          }
                           console.log('hollis pub: ' + publisher);
-                          if (res.mods.originInfo.dateIssued.content) 
-                             date = res.mods.originInfo.dateIssued.content;
+                          if ( originInfo.dateIssued.content) 
+                             date = originInfo.dateIssued.content;
                           else
-                             date = res.mods.originInfo.dateIssued;
+                             date = originInfo.dateIssued;
                           console.log('hollis date: ' + date);
                     
                           
@@ -471,12 +499,12 @@ Ext.define('doweown.controller.Main', {
                 		mainController.hollisLookup(barcode, mainController.getMainScreen()); 
                 	}
                 	else {
-                		Ext.Msg.alert("Invalid barcode " + barcode);
+                		Ext.Msg.alert('Invalid barcode',"Invalid barcode " + barcode);
                 	}	    
                 }
             },
             function(error) {
-               Ext.Msg.alert("Whoops! Scanning failed: " + error);
+               Ext.Msg.alert('FAIL', "Whoops! Scanning failed: " + error);
             }
 		);
     },
@@ -510,6 +538,66 @@ Ext.define('doweown.controller.Main', {
 	var sb = this.getSingleBookList();
  	sb.getParent().push( {xtype: 'availview'} );
         sb.deselectAll();
+     },
+     
+     
+     
+     savePrefs: function() {
+     	var prefsStore = Ext.getStore('PrefsStore');
+     	var formValues = this.getPrefsForm().getValues();
+	    if (prefsStore.getAllCount() > 0) {
+        		var pref = prefsStore.getAt(0);
+        		pref.set('firstname', formValues.firstname);
+        		pref.set('lastname', formValues.lastname);
+        		pref.set('email', formValues.email);
+        		pref.set('library', formValues.library);
+        		pref.set('school', formValues.school);
+        		pref.set('affilation', formValues.affiliation);
+				prefsStore.sync();
+				Ext.Msg.alert("Settings saved.");
+         }
+         else {
+         	var pref = Ext.create( 'doweown.store.PrefsStore', 
+         	  {
+         	  	'firstname': formValues.firstname,
+         	  	'lastname': formValues.lastname,
+         	  	'email': formValues.email,
+         	  	'library': formValues.library,
+         	  	'school': formValues.school,
+         	  	'affiliation': formValues.affiliation
+         	  });
+         	 prefsStore.add(pref);
+         	 
+        }
+     	
+     },
+     
+     
+     launch: function() {
+     	var prefsStore = Ext.getStore('PrefsStore');
+     	var prefsForm = this.getPrefsForm();
+     	if (prefsStore.getAllCount() > 0) {
+     		var pref =  prefsStore.getAt(0);
+     		prefsForm.setRecord(pref);
+     	}
+     	else { //switch to prefs screen and ask for prefs
+     		var tabBar = this.getTabBar();
+     		tabBar.setActiveItem(2);
+     		Ext.Msg.alert('Welcome!', 'Before you begin, please enter your email settings.');
+     	}    	
+     },
+          
+     
+     resetPrefs: function() {
+     	var prefsStore = Ext.getStore('PrefsStore');
+     	var prefsForm = this.getPrefsForm();
+     	if (prefsStore.getAllCount() > 0) {
+     		var pref =  prefsStore.getAt(0);
+     		prefsForm.setRecord(pref);
+     	}
+     	else {
+     		this.getPrefsForm().reset();
+     	}
      }
 
 });
