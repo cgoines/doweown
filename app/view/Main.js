@@ -68,6 +68,7 @@ Ext.define('doweown.view.Main', {
 			items: [
 			  { xtype: 'titlebar', title: 'E-mail Settings', docked: 'top' }, 
 		   	  { xtype: 'fieldset',
+			    instructions: 'Enter your email settings here.',
 	            	    items: [		
 				{xtype: 'textfield', name: 'firstname', label: 'First Name'},
 				{xtype: 'textfield', name: 'lastname', label: 'Last Name'},
