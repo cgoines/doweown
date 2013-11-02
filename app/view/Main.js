@@ -118,7 +118,7 @@ Ext.define('doweown.view.Main', {
 		items: [
 			{ xtype: 'titlebar', title: 'About', docked: 'top' },
 			{ xtype: 'spacer'},
-			{ xtype: 'panel', styleHtmlContent: true, 
+			{ xtype: 'panel', styleHtmlContent: true, scrollable: true,
 			  html: '<p><b>Do we own this?</b><br>' +
 				'A mobile app for library collection development' +
                       		'<p>Version: 0.9' +
