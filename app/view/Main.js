@@ -1,8 +1,6 @@
 Ext.define('doweown.view.Main', {
     extend: 'Ext.tab.Panel',
     xtype: 'main',
-    itemId: 'tabBar',
-    id: 'tabBar',
     requires: [
         'Ext.TitleBar',
 	'Ext.form.Panel',
