@@ -9,7 +9,7 @@ Ext.define('doweown.view.SingleBook', {
 	   pinHeaders: true,
 	   onItemDisclosure: true,
 	   disableSelection: true,
-	   itemTpl: '<img src="{thumb}" style="float:left; padding: 5px 5px 4px 5px"/><b>{title}</b><br><i>{author}</i><br>{publisher}, {date}<br>ISBN: {isbn}<br>{description}',
+	   itemTpl: '<img src="{thumb}" style="float:left; padding: 5px 5px 4px 5px"/><b>{title}</b><br><i>{author}</i><br>{publisher}, {date}<br>ISBN: {isbn}<br>{description}<p>Tap to see availability',
 	   /*onItemDisclosure: function( record, btn, index ) {
                                 this.getParent().push( {xtype: 'availview'} );
 				this.deselectAll();
