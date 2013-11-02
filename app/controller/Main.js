@@ -443,7 +443,9 @@ Ext.define('doweown.controller.Main', {
                            publisher = "Publisher unknown";
                           }
                           console.log('hollis pub: ' + publisher);
-                          if ( originInfo.dateIssued.content) 
+                          if ( originInfo.dateIssued instanceof Array )
+                          	date = originInfo.dateIssued[0];
+                          else if ( originInfo.dateIssued.content) 
                              date = originInfo.dateIssued.content;
                           else
                              date = originInfo.dateIssued;
