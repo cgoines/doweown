@@ -418,8 +418,12 @@ Ext.define('doweown.controller.Main', {
                             	 author = res.mods.name[0].namePart;
                         	}
                           }
-                          else {                         
-                            author = res.mods.name.namePart;
+                          else {
+                            if ( res.mods.name.namePart instanceof Array ) {
+                              author = res.mods.name.namePart[0];
+                            } else {                        
+                              author = res.mods.name.namePart;
+                            }
                           }
                           console.log('hollis author: ' + author);
                           
