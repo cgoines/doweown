@@ -586,7 +586,7 @@ Ext.define('doweown.controller.Main', {
         		pref.set('email', formValues.email);
         		pref.set('library', formValues.library);
         		pref.set('school', formValues.school);
-        		pref.set('affilation', formValues.affiliation);
+        		pref.set('affiliation', formValues.affiliation);
 				prefsStore.sync();
 				Ext.Msg.alert("Settings saved.");
          }
