@@ -647,6 +647,12 @@ Ext.define('doweown.controller.Main', {
      	var tab = tabBar.getActiveItem();
      	var navPanel = tab.child('navigationview');
      	navPanel.reset();
+     	if (navPanel.getId() == 'historynav' ) {
+     		tabBar.setActiveItem(0);
+     		var tab2 = tabBar.getActiveItem();
+     		var navPanel2 = tab2.child('navigationview');
+     		navPanel2.reset();
+     	}
      	
      }
 
