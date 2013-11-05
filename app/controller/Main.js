@@ -26,17 +26,21 @@ Ext.define('doweown.controller.Main', {
 		'resetBtn': 'main #resetBtn',
 		'saveBtn': 'main #saveBtn',
 		'prefsForm': 'main #prefsform',
+		'scanResetBtn1': 'main #scanreset1',
+		'scanResetBtn2': 'main #scanreset2',
 		'tabBar': 'main'
 		//'singleBookList': '#singleBookList'
         },
     	control: {
             scanBtn: { tap: 'scanImage' },
-	    inputField: { action: 'readIsbn' },
+	    	inputField: { action: 'readIsbn' },
 	    //singleBookList: { itemtap: 'showAvailability' },
-	    historyList: { itemtap: 'searchFromHistory' },
+	    	historyList: { itemtap: 'searchFromHistory' },
 	    	saveBtn: { tap: 'savePrefs' },
 	    	resetBtn: { tap: 'resetPrefs'},
-	    	prefsForm: { show: 'loadPrefs'}
+	    	prefsForm: { show: 'loadPrefs'},
+	    	scanResetBtn1: { tap: 'resetScan' },
+	    	scanResetBtn2: { tap: 'resetScan' }
          }
     },
     
@@ -78,33 +82,33 @@ Ext.define('doweown.controller.Main', {
 		var ms = navListWindow;
 		var hl = this.getHistoryList();
 		var title,thumb,description,date,publisher;
-		console.log('google lookup');
-		console.log('gbooks called url: ' + gBooksUrl);
+		//console.log('google lookup');
+		//console.log('gbooks called url: ' + gBooksUrl);
 		Ext.data.JsonP.request({
         	url: gBooksUrl,
 			disableCaching: false,
             success: function(res, request) {
                 	// Get the gbooks data from the json object result
-                console.log('google jsonp call successful');
-                console.log('res.totalItems: ' + res.totalItems);
+                //console.log('google jsonp call successful');
+                //console.log('res.totalItems: ' + res.totalItems);
 				if (res.totalItems > 0) {
 					gBooksResult = true;
-				  	console.log("google worked");
+				  	//console.log("google worked");
 				  	if ( res.items[0].volumeInfo.imageLinks ) {
 				  	  thumb = res.items[0].volumeInfo.imageLinks.smallThumbnail;
 				  	}
 
-				  	console.log('thumb: ' + thumb);
+				  	//console.log('thumb: ' + thumb);
 				 	title =  res.items[0].volumeInfo.title;
-				 	console.log('title: ' + title);
+				 	//console.log('title: ' + title);
 				 	//console.log('author: ' + author);
 	             	date =  res.items[0].volumeInfo.publishedDate;
-	             	console.log('date: ' + date);
+	             	//console.log('date: ' + date);
 	                publisher =  res.items[0].volumeInfo.publisher;
-	                console.log('publisher: ' + publisher);
+	                //console.log('publisher: ' + publisher);
 	                description = res.items[0].volumeInfo.description;
-	                console.log('description: ' + description);
-	                //return {thumb: thumb, description: description};
+	                //console.log('description: ' + description);
+
 	                //update thumbs
 			var historyStore = Ext.getStore('HistoryStore');
 			var idx = historyStore.findExact('barcode', barcode);
@@ -116,7 +120,7 @@ Ext.define('doweown.controller.Main', {
 				historyRec.set('date', date);
 				if (historyRec.get('publisher') == '')
 				  historyRec.set('publisher', publisher);
-				console.log('history has ' + historyStore.getAllCount() + ' items');
+				//console.log('history has ' + historyStore.getAllCount() + ' items');
 				hl.refresh();
                   	}
 	                if (searchType=='hollis') {
@@ -132,20 +136,20 @@ Ext.define('doweown.controller.Main', {
 	                      hollisRec.set('title', title);
 	                   if (hollisRec.get('publisher') == '') 
 	                     hollisRec.set('publisher', publisher);
-	                   console.log('showing singlebookview');
+	                   //console.log('showing singlebookview');
 			   ms.setMasked(false);
 	                   ms.push({ xtype: 'singlebook' });
 	                }
 	                else {
 	                   var worldCat = Ext.getStore('WorldCatStore');
-	                   console.log("worldcat store loaded with " + worldCat.getAllCount() + " records");
+	                   //console.log("worldcat store loaded with " + worldCat.getAllCount() + " records");
 	                   var worldCatRec = worldCat.getAt(0);
-	                   console.log("updating world cat record: " + worldCatRec.get('title') );
+	                   //console.log("updating world cat record: " + worldCatRec.get('title') );
 			   if (thumb)
 	                      worldCatRec.set('thumbnail', thumb);
 			   if (description)
 	                     worldCatRec.set('description', description);
-	                   console.log('showing worldcatview');
+	                   //console.log('showing worldcatview');
 			   ms.setMasked(false);
 	                   ms.push({ xtype : 'worldcatview' });
 	                }
@@ -153,7 +157,7 @@ Ext.define('doweown.controller.Main', {
 				}		
 				else { // not found in gbooks, do worldcat lookup
 				  //do worldcat lookup
-				   console.log('thumbnail not found in gbooks');	
+				   //console.log('thumbnail not found in gbooks');	
 				   if (searchType=='hollis') {
 					ms.setMasked(false);
 	                   		ms.push({ xtype: 'singlebook' });
@@ -165,7 +169,7 @@ Ext.define('doweown.controller.Main', {
 				}
 		    },
 			failure: function(res, request) { //gBooks lookup req failed - try worldcat anyway
-					console.log("gbooks thumbnail lookup call failed");
+					//console.log("gbooks thumbnail lookup call failed");
 					if (searchType=='hollis')  {
 				ms.setMasked(false);
 	                   	ms.push({ xtype: 'singlebook' });	
@@ -182,7 +186,7 @@ Ext.define('doweown.controller.Main', {
 	},
    
     worldCatLookup: function(barcode, navListWindow) {
-  	console.log('commencing worldcat lookup for isbn: ' + barcode);
+  	//console.log('commencing worldcat lookup for isbn: ' + barcode);
   	var ms = navListWindow;
   	var mainController = this;
 	var hl = mainController.getHistoryList();
@@ -192,7 +196,7 @@ Ext.define('doweown.controller.Main', {
 	
 	
 	var lookupURL = worldCatURL + barcode;
-	console.log('worldcat url is: ' + lookupURL);
+	//console.log('worldcat url is: ' + lookupURL);
 	var worldCatStore = Ext.getStore('WorldCatStore');
 	if (worldCatStore.getAllCount() > 0) {
         worldCatStore.removeAll();
@@ -208,9 +212,9 @@ Ext.define('doweown.controller.Main', {
         },
 	    success: function(res, request) {
 	        if (typeof res.title != 'undefined'){
-	          console.log('worldcat jsonp call successful'); 
+	          //console.log('worldcat jsonp call successful'); 
 	          var title = res.title;
-	          console.log('title: ' + title);
+	          //console.log('title: ' + title);
 	          var author = res.author;
 	          var date = res.date;
 	          var publisher = res.publisher;
@@ -218,7 +222,7 @@ Ext.define('doweown.controller.Main', {
 	          var totalLibCount = res.totalLibCount;
 	          var library = res.library;
 	          var OCLCnumber = res.OCLCnumber;
-	          console.log('libraries: ' + library);
+	          //console.log('libraries: ' + library);
 	          
 	          var prefsStore = Ext.getStore('PrefsStore');
 	          var prefFirstName = '';
@@ -273,14 +277,9 @@ Ext.define('doweown.controller.Main', {
 	              
 	            
 	          });
-	          console.log('worldcat record created');
+	          //console.log('worldcat record created');
 	          worldCatStore.add(worldCatRec);
-	          //worldCatStore.sync();
-	          console.log('worldcat record added');
-	        //worldCatStore.sync();
-	        //console.log('worldcat store synced');
-	          console.log("worldcat store loaded with " + 
-	           worldCatStore.getAllCount() + " records");
+
 	          //lookup google for thumbnail & go to worldcat result list
 	          var isbnString = '';
 	          if (ISBN instanceof Array ) {
@@ -293,9 +292,9 @@ Ext.define('doweown.controller.Main', {
               else { // instance of String
                 isbnString = "isbn:" + ISBN;
               }
-              console.log('isbnString: ' + isbnString);
+              //console.log('isbnString: ' + isbnString);
               gBooksURL = gBooksURL + isbnString;
-              console.log('gbooks url: ' + gBooksURL);
+              //console.log('gbooks url: ' + gBooksURL);
 		  var historyRec = Ext.create('doweown.model.History', {
 			'title': title, 
 			'author': author,
@@ -309,7 +308,6 @@ Ext.define('doweown.controller.Main', {
 			hl.refresh();
 		  }
 	          mainController.googleLookup(gBooksURL,'worldcat', barcode, ms); 
-	          //ms.push({ xtype : 'worldcatview' });
 	        }
 	        else { //not in worldcat
 			ms.setMasked(false);
@@ -333,7 +331,7 @@ Ext.define('doweown.controller.Main', {
 		var mainController = this;
 		var hl = mainController.getHistoryList();
 		var gBooksURL = doweown.config.Config.getGoogleBooksUrl(); // + 'isbn:' + barcode;
-		console.log('commencing hollis lookup');
+		//console.log('commencing hollis lookup');
 		var availURL;
 		var isbnURL = doweown.config.Config.getHollisIsbnUrl() + barcode;
 		var similarURL = doweown.config.Config.getHollisSimilarUrl();
@@ -351,7 +349,7 @@ Ext.define('doweown.controller.Main', {
 		var thumb = '';
 		var date = '';
 		var hollisId = 0;
-		console.log('hollis url: ' + isbnURL);
+		//console.log('hollis url: ' + isbnURL);
 		
 		var gBooksStore = Ext.getStore('GbooksStore');
 	    if (gBooksStore.getAllCount() > 0) {
@@ -365,13 +363,11 @@ Ext.define('doweown.controller.Main', {
                        callbackKey: 'jsonp',
                        disableCaching: false,
                        success: function(res, request) {
-			           console.log("hollis lookup");
+			           //console.log("hollis lookup");
                          // Get the isbn data from the json object result
                          if (res.mods) {
                           isbnResult = true;
-                          console.log("isbn worked");
-                          //console.log('gbooks url: ' + gBooksURL);
-                          
+                          //console.log("isbn worked");
                           
                           var isbnString = '';
                           var isbnList = res.mods.identifier;
@@ -403,13 +399,13 @@ Ext.define('doweown.controller.Main', {
                           	isbnString = isbnString + '+OR+isbn:' + barcode;
                           if (isbnString.length == 0)
                              isbnString = 'isbn:' + barcode;
-                          console.log('isbnString: ' + isbnString);
+                          //console.log('isbnString: ' + isbnString);
                           gBooksURL = gBooksURL + isbnString;
                           //call google
-	                      console.log('gbooks url: ' + gBooksURL);
+	                      //console.log('gbooks url: ' + gBooksURL);
                                                                           
                           hollisId = res.mods.recordInfo.recordIdentifier.substring(0,9);
-                          console.log('hollis id is: ' + hollisId);
+                          //console.log('hollis id is: ' + hollisId);
                                                                             
                           if ( typeof res.mods.titleInfo.title === 'string') 
                           	title = res.mods.titleInfo.title;
@@ -421,7 +417,7 @@ Ext.define('doweown.controller.Main', {
                              title = res.mods.titleInfo.nonSort + ' ' +title;
                           if (res.mods.titleInfo.subTitle)
                              title = title + ': ' + res.mods.titleInfo.subTitle;
-                          console.log('hollis title: ' + title); 
+                          //console.log('hollis title: ' + title); 
                           if (res.mods.name instanceof Array ) {
                           	if ( res.mods.name[0].namePart instanceof Array ) {
                             author = res.mods.name[0].namePart[0];
@@ -436,7 +432,7 @@ Ext.define('doweown.controller.Main', {
                               author = res.mods.name.namePart;
                             }
                           }
-                          console.log('hollis author: ' + author);
+                          //console.log('hollis author: ' + author);
                           
                           var originInfo;
                           if (res.mods.originInfo instanceof Array) {
@@ -451,25 +447,25 @@ Ext.define('doweown.controller.Main', {
                           } else {
                           	place = 'unknown';
                           }
-                          console.log('hollis place: ' + place);
+                          //console.log('hollis place: ' + place);
                           if ( originInfo.publisher ) {
                           	publisher = originInfo.publisher;
                           } else {
                            publisher = "Publisher unknown";
                           }
-                          console.log('hollis pub: ' + publisher);
+                          //console.log('hollis pub: ' + publisher);
                           if ( originInfo.dateIssued instanceof Array )
                           	date = originInfo.dateIssued[0];
                           else if ( originInfo.dateIssued.content) 
                              date = originInfo.dateIssued.content;
                           else
                              date = originInfo.dateIssued;
-                          console.log('hollis date: ' + date);
+                          //console.log('hollis date: ' + date);
                     
                           
 						  //call presto again for availabilty
 						  availURL  = doweown.config.Config.getHollisAvailUrl() +hollisId;
-                          console.log(availURL);
+                          //console.log(availURL);
                           Ext.data.JsonP.request({
                      	      url: availURL,
                               callbackKey: 'jsonp',
@@ -478,8 +474,6 @@ Ext.define('doweown.controller.Main', {
                                 // Get the availability data from the json object result
                                 if (res.availability) {
                                   availResult = true;
-                                  console.log("avail worked");
-                                  //console.log(availResult);
 								  //add book to books store and availability store						
 						          var hollisRec = Ext.create('doweown.model.Isbn', {
 						             'title' :   title,
@@ -525,8 +519,6 @@ Ext.define('doweown.controller.Main', {
             		   },
 					   failure: function(res, request) { //not in hollis
 			   			 //do worldcat lookup
-			   			 //Ext.Msg.alert(barcode + " not in hollis. sorry.");
-			   			 console.log(barcode + " not in hollis. sorry.");
 			   			 mainController.worldCatLookup(barcode, navListWindow);
 					   }
         			});
@@ -547,7 +539,6 @@ Ext.define('doweown.controller.Main', {
                if (result.text)
 			    {
 			    	if (mainController.validateBarcode(barcode)) {
-			    		console.log("valid barcode");
                 		mainController.hollisLookup(barcode, mainController.getMainScreen()); 
                 	}
                 	else {
@@ -567,7 +558,6 @@ Ext.define('doweown.controller.Main', {
 	var mainController = this;
 	if (barcode.length > 0) {
 	  if (mainController.validateBarcode(barcode)) {
-		console.log("valid barcode");
 		mainController.hollisLookup(barcode, mainController.getMainScreen());
 	  }
 	  else {
@@ -650,6 +640,11 @@ Ext.define('doweown.controller.Main', {
      	else {
      		this.getPrefsForm().reset();
      	}
+     },
+     
+     resetScan: function() {
+     	var mainscreen = this.getMainScreen();
+     	mainscreen.reset();
      }
 
 });
