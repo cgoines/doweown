@@ -643,8 +643,11 @@ Ext.define('doweown.controller.Main', {
      },
      
      resetScan: function() {
-     	var mainscreen = this.getMainScreen();
-     	mainscreen.reset();
+     	var tabBar = this.getTabBar();
+     	var tab = tabBar.getActiveItem();
+     	var navPanel = tab.child('navigationview');
+     	navPanel.reset();
+     	
      }
 
 });
