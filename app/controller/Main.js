@@ -86,7 +86,7 @@ Ext.define('doweown.controller.Main', {
 		//console.log('gbooks called url: ' + gBooksUrl);
 		Ext.data.JsonP.request({
         	url: gBooksUrl,
-			disableCaching: false,
+			disableCaching: true,
             success: function(res, request) {
                 	// Get the gbooks data from the json object result
                 //console.log('google jsonp call successful');
@@ -203,7 +203,7 @@ Ext.define('doweown.controller.Main', {
     }
 	Ext.data.JsonP.request({
 	    url: lookupURL,
-	    disableCaching: false,
+	    disableCaching: true,
 	    callbackKey: 'callback',
 	    params: {
         	wskey: doweown.config.Config.getWorldCatDevKey(),
@@ -361,7 +361,7 @@ Ext.define('doweown.controller.Main', {
 		Ext.data.JsonP.request({
                        url: isbnURL,
                        callbackKey: 'jsonp',
-                       disableCaching: false,
+                       disableCaching: true,
                        success: function(res, request) {
 			           //console.log("hollis lookup");
                          // Get the isbn data from the json object result
@@ -469,7 +469,7 @@ Ext.define('doweown.controller.Main', {
                           Ext.data.JsonP.request({
                      	      url: availURL,
                               callbackKey: 'jsonp',
-                              disableCaching: false,
+                              disableCaching: true,
                               success: function(res, request) {
                                 // Get the availability data from the json object result
                                 if (res.availability) {
