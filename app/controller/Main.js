@@ -224,23 +224,6 @@ Ext.define('doweown.controller.Main', {
 	          var OCLCnumber = res.OCLCnumber;
 	          //console.log('libraries: ' + library);
 	          
-	          var prefsStore = Ext.getStore('PrefsStore');
-	          var prefFirstName = '';
-	          var prefLastName = '';
-	          var prefEmail = '';
-	          var prefLibrary = '';
-	          var prefSchool = '';
-	          var prefAffiliation = '';
-	          
-	          if (prefsStore.getAllCount() > 0) {
-     		  	var pref =  prefsStore.getAt(0);
-     			prefFirstName  = pref.get('firstname');
-     			prefLastName = pref.get('lastname');
-     			prefEmail = pref.get('email');
-     			prefLibrary = pref.get('library');
-     			prefSchool = pref.get('school');
-     			prefAffiliation = pref.get('affiliation');
-     		  }
 	          
 	          var emailISBN = '';
 	          if (ISBN instanceof Array ) {
@@ -259,23 +242,8 @@ Ext.define('doweown.controller.Main', {
 	            'totalLibCount': totalLibCount,
 		        'borrowDirectUrl': borrowDirectURL,
 	            'library': library,
-	            'mailto': 'mailto:' + doweown.config.Config.getEmailTo() + 
-	              '?subject=' + encodeURIComponent(doweown.config.Config.getEmailSubject()) + '&' +
-	              'body=Title:%20' + encodeURIComponent(title) + '%0A' +
-	              'Author:%20' + encodeURIComponent(author) + '%0A' +
-	              'Date:%20' + encodeURIComponent(date) + '%0A' +
-	              'Publisher:%20' + encodeURIComponent(publisher) + '%0A' +
-	              'ISBN:%20' + emailISBN +
-	              'OCLC Number:%20' + OCLCnumber + '%0A' +
-	              '------------------------%0A' +
-	              'Requester information:%0A%0A' +
-	              'Name:%20' + encodeURIComponent(prefFirstName) + '%20' + encodeURIComponent(prefLastName) +'%0A' +
-	              'E-mail:%20' + encodeURIComponent(prefEmail) + '%0A' +
-	              'Library:%20' + encodeURIComponent(prefLibrary) + '%0A' +
-	              'School%2FUnit:%20' + encodeURIComponent(prefSchool) + '%0A' +
-	              'Affiliation:%20' + encodeURIComponent(prefAffiliation) + '%0A'
-	              
-	            
+	            'mailto': mainController.generateMailto(title, author, date, 
+	            	publisher, emailISBN, OCLCnumber)     	            
 	          });
 	          //console.log('worldcat record created');
 	          worldCatStore.add(worldCatRec);
@@ -654,6 +622,42 @@ Ext.define('doweown.controller.Main', {
      		navPanel2.reset();
      	}
      	
+     },
+     
+     
+     generateMailto: function(title, author, date, publisher, emailISBN, OCLCnumber) {
+     	var prefsStore = Ext.getStore('PrefsStore');
+		var prefFirstName = '';
+	    var prefLastName = '';
+		var prefEmail = '';
+	    var prefLibrary = '';
+	    var prefSchool = '';
+		var prefAffiliation = '';
+	          
+	    if (prefsStore.getAllCount() > 0) {
+     		var pref =  prefsStore.getAt(0);
+     			prefFirstName  = pref.get('firstname');
+     			prefLastName = pref.get('lastname');
+     			prefEmail = pref.get('email');
+     			prefLibrary = pref.get('library');
+     			prefSchool = pref.get('school');
+     			prefAffiliation = pref.get('affiliation');
+     	}
+     	return	'mailto:' + doweown.config.Config.getEmailTo() + 
+	              '?subject=' + encodeURIComponent(doweown.config.Config.getEmailSubject()) + '&' +
+	              'body=Title:%20' + encodeURIComponent(title) + '%0A' +
+	              'Author:%20' + encodeURIComponent(author) + '%0A' +
+	              'Date:%20' + encodeURIComponent(date) + '%0A' +
+	              'Publisher:%20' + encodeURIComponent(publisher) + '%0A' +
+	              'ISBN:%20' + emailISBN +
+	              'OCLC Number:%20' + OCLCnumber + '%0A' +
+	              '------------------------%0A' +
+	              'Requester information:%0A%0A' +
+	              'Name:%20' + encodeURIComponent(prefFirstName) + '%20' + encodeURIComponent(prefLastName) +'%0A' +
+	              'E-mail:%20' + encodeURIComponent(prefEmail) + '%0A' +
+	              'Library:%20' + encodeURIComponent(prefLibrary) + '%0A' +
+	              'School%2FUnit:%20' + encodeURIComponent(prefSchool) + '%0A' +
+	              'Affiliation:%20' + encodeURIComponent(prefAffiliation) + '%0A' 
      }
 
 });
