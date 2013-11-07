@@ -643,21 +643,33 @@ Ext.define('doweown.controller.Main', {
      			prefSchool = pref.get('school');
      			prefAffiliation = pref.get('affiliation');
      	}
-     	return	'mailto:' + doweown.config.Config.getEmailTo() + 
-	              '?subject=' + encodeURIComponent(doweown.config.Config.getEmailSubject()) + '&' +
-	              'body=Title:%20' + encodeURIComponent(title) + '%0A' +
-	              'Author:%20' + encodeURIComponent(author) + '%0A' +
-	              'Date:%20' + encodeURIComponent(date) + '%0A' +
-	              'Publisher:%20' + encodeURIComponent(publisher) + '%0A' +
-	              'ISBN:%20' + emailISBN +
-	              'OCLC Number:%20' + OCLCnumber + '%0A' +
-	              '------------------------%0A' +
-	              'Requester information:%0A%0A' +
-	              'Name:%20' + encodeURIComponent(prefFirstName) + '%20' + encodeURIComponent(prefLastName) +'%0A' +
-	              'E-mail:%20' + encodeURIComponent(prefEmail) + '%0A' +
-	              'Library:%20' + encodeURIComponent(prefLibrary) + '%0A' +
-	              'School%2FUnit:%20' + encodeURIComponent(prefSchool) + '%0A' +
-	              'Affiliation:%20' + encodeURIComponent(prefAffiliation) + '%0A' 
+     	return doweown.config.Config.getFeedbackUrl() + 
+     	  'lbt=Do%20We%20Own%20This&refU=doweown%3A%2F%2Fharvard.edu%2F&' + 
+     	  'pageTitle='+ encodeURIComponent(doweown.config.Config.getFeedbackTitle())+'&'+
+     	  'repProb='+ doweown.config.Config.getEmailTo() +'&' +
+     	  'repComm='+ doweown.config.Config.getEmailTo() +'&' +
+     	  'cat=' + encodeURIComponent(doweown.config.Config.getEmailCategory())+ '&' +
+     	  'PROJECTNAME=doweown&fromUser=true&'+
+     	  'firstName='+ encodeURIComponent(prefFirstName) + '&' +
+     	  'lastName=' + encodeURIComponent(prefLastName) + '&' +
+     	  'FROM=' + encodeURIComponent(prefEmail) + '&' +
+     	  'affil=' + encodeURIComponent(prefAffiliation) + '&' +
+     	  'comment=' + encodeURIComponent(doweown.config.Config.getEmailSubject()) +'%0A'+
+     	   	'Title:%20' + encodeURIComponent(title) + '%0A' +
+	    	'Author:%20' + encodeURIComponent(author) + '%0A' +
+	        'Date:%20' + encodeURIComponent(date) + '%0A' +
+	        'Publisher:%20' + encodeURIComponent(publisher) + '%0A' +
+	        'ISBN:%20' + emailISBN +
+	        'OCLC Number:%20' + OCLCnumber + '%0A' +
+	        '------------------------%0A' +
+	        'Requester information:%0A%0A' +
+	        'Name:%20' + encodeURIComponent(prefFirstName) + '%20' + 
+	           encodeURIComponent(prefLastName) +'%0A' +
+	        'Preferred%20Library:%20' + encodeURIComponent(prefLibrary) + '%0A' +
+	        'School%2FUnit:%20' + encodeURIComponent(prefSchool) + '%0A' +
+	        'Affiliation:%20' + encodeURIComponent(prefAffiliation) + '%0A%0A' +
+	        encodeURIComponent(doweown.config.Config.getEmailFooter());
+     	            
      }
 
 });
