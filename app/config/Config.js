@@ -2,10 +2,15 @@ Ext.define('doweown.config.Config', {
 	singleton: true,
 
 	config: {
-		emailSubject:	  'Patron Request',
-		emailTo:	  '',
+		emailSubject:	  'Patron Acquisition Request',
+		emailTo:	  'chip_goines',
+		emailSupport:	  'chip_goines',
+		emailFooter:	  'Sent from the "Do We Own This?" App',
+		emailCategory:	  'Patron Acquisition Request',
 		borrowDirectUrl:  'http://access.harvard.edu/access/servlet/access?__hulaccess_gateway=bdirect&__hulaccess_resource=&query=isbn%3D%22_ISBN_%22',
 		borrowDirectDefaultUrl: 'http://nrs.harvard.edu/urn-3:hul.eother:BD',
+		feedbackUrl:	  'http://feedback.lib.harvard.edu/feedback/feedbackEmail?',
+		feedbackTitle:	  'Patron Acquisition Request',
 		hollisIsbnUrl:    'http://webservices.lib.harvard.edu/rest/mods/hollis/isbn/',
 		hollisAvailUrl:   'http://webservices.lib.harvard.edu/rest/hollis/avail/',
 		hollisSimilarUrl: 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?q=title:',
