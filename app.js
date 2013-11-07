@@ -60,6 +60,9 @@ Ext.application({
 
         // Initialize the main view
         Ext.Viewport.add(Ext.create('doweown.view.Main'));
+
+	//bugfix for cut & paste in text fields
+	Ext.event.publisher.TouchGesture.prototype.isNotPreventable=/^(select|a|input|textarea)$/i;
     },
 
     onUpdated: function() {
