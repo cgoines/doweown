@@ -645,7 +645,7 @@ Ext.define('doweown.controller.Main', {
      	}
      	return doweown.config.Config.getFeedbackUrl() + 
      	  'lbt=Do%20We%20Own%20This&refU=doweown%3A%2F%2Fharvard.edu%2F&' + 
-     	  'pageTitle='+ encodeURIComponent(doweown.config.Config.getFeedbackTitle())+'&'+
+     	  'pageTitle='+ encodeURIComponent(doweown.config.Config.getEmailSubject())+'&'+
      	  'repProb='+ doweown.config.Config.getEmailTo() +'&' +
      	  'repComm='+ doweown.config.Config.getEmailTo() +'&' +
      	  'cat=' + encodeURIComponent(doweown.config.Config.getEmailCategory())+ '&' +
@@ -654,7 +654,7 @@ Ext.define('doweown.controller.Main', {
      	  'lastName=' + encodeURIComponent(prefLastName) + '&' +
      	  'FROM=' + encodeURIComponent(prefEmail) + '&' +
      	  'affil=' + encodeURIComponent(prefAffiliation) + '&' +
-     	  'comment=' + encodeURIComponent(doweown.config.Config.getEmailSubject()) +'%0A'+
+     	  'comment='+
      	   	'Title:%20' + encodeURIComponent(title) + '%0A' +
 	    	'Author:%20' + encodeURIComponent(author) + '%0A' +
 	        'Date:%20' + encodeURIComponent(date) + '%0A' +
@@ -671,5 +671,6 @@ Ext.define('doweown.controller.Main', {
 	        encodeURIComponent(doweown.config.Config.getEmailFooter());
      	            
      }
+     
 
 });
