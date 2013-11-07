@@ -6,7 +6,8 @@ Ext.define('doweown.view.Main', {
 	'Ext.form.Panel',
 	'Ext.form.FieldSet',
 	'Ext.field.Select',
-        'doweown.view.History'
+        'doweown.view.History',
+	'doweown.store.LibraryStore'
     ],
     config: {
         tabBarPosition: 'bottom',
@@ -75,7 +76,7 @@ Ext.define('doweown.view.Main', {
 				{xtype: 'textfield', name: 'firstname', label: 'First <br>Name'},
 				{xtype: 'textfield', name: 'lastname', label: 'Last <br>Name'},
 				{xtype: 'textfield', name: 'email', label: 'E-mail'},
-				{xtype: 'textfield', name: 'library', label: 'Library'},
+				{xtype: 'selectfield', name: 'library', label: 'Library', store: 'libraries'},
                                 {xtype: 'textfield', name: 'school', label: 'School /<br>Unit'},
                                 {xtype: 'selectfield', name: 'affiliation', label: 'Affiliation',
 				 options: [
