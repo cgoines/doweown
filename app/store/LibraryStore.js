@@ -2,7 +2,6 @@ Ext.define('doweown.store.LibraryStore', {
         extend: 'Ext.data.Store',
         alias: 'store.LibraryStore',
 	config: {
-	   storeId: 'libraries',
 	   model: 'doweown.model.Library',
 	   autoLoad: true,
 	   data: [
