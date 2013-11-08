@@ -3,8 +3,8 @@ Ext.define('doweown.config.Config', {
 
 	config: {
 		emailSubject:	  'Patron Acquisition Request',
-		emailTo:	  'chip_goines',
-		emailSupport:	  'chip_goines',
+		emailTo:	  'doweownthis@hulmail.harvard',
+		emailSupport:	  'doweownthis@hulmail.harvard',
 		emailFooter:	  'Sent from the "Do We Own This?" App',
 		emailCategory:	  'Patron Acquisition Request',
 		borrowDirectUrl:  'http://access.harvard.edu/access/servlet/access?__hulaccess_gateway=bdirect&__hulaccess_resource=&query=isbn%3D%22_ISBN_%22',
