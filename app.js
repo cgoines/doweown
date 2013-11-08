@@ -30,11 +30,11 @@ Ext.application({
     views: [ 'Main', 'SingleBook', 'AvailBook', 'SingleBookView', 'AvailView', 'WorldCatView', 'History' ],
 
     models: [ 'Isbn','Avail','Availability', 'Branch','Repository','Collection','History', 
-	'Prefs','ItemRecord','NoItems','HoldTag','Gbooks','AvailVal', 'WorldCatBooks' ],
+	'Prefs','ItemRecord','NoItems','HoldTag','Gbooks','AvailVal', 'WorldCatBooks', 'Library' ],
 
     controllers: ['Main'],
 
-    stores: [ 'Biblio', 'BranchStore', 'WorldCatStore', 'GbooksStore','HistoryStore','PrefsStore' ],
+    stores: [ 'Biblio', 'BranchStore', 'WorldCatStore', 'GbooksStore','HistoryStore','PrefsStore', 'LibraryStore' ],
 
     icon: {
         '57': 'resources/icons/Icon.png',
