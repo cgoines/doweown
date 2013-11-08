@@ -633,22 +633,34 @@ Ext.define('doweown.controller.Main', {
 	    var prefLibrary = '';
 	    var prefSchool = '';
 		var prefAffiliation = '';
+		var idx = '1';
+		var libraryStore = Ext.getStore('LibraryStore');
+        var libraryRec;
+		var libraryEmail = doweown.config.Config.getEmailTo();
 	          
 	    if (prefsStore.getAllCount() > 0) {
      		var pref =  prefsStore.getAt(0);
      			prefFirstName  = pref.get('firstname');
      			prefLastName = pref.get('lastname');
      			prefEmail = pref.get('email');
-     			prefLibrary = pref.get('library');
+     			idx = pref.get('library');
+     			libraryRec = libraryStore.findRecord('libcode', idx);
+     			libraryEmail =  libraryRec.get('email');
+     			prefLibrary = libraryRec.get('name');
      			prefSchool = pref.get('school');
      			prefAffiliation = pref.get('affiliation');
      	}
+     	
+        
+     	
      	return doweown.config.Config.getFeedbackUrl() + 
      	  'lbt=Do%20We%20Own%20This&refU=doweown%3A%2F%2Fharvard.edu%2F&' + 
-     	  'pageTitle='+ encodeURIComponent(doweown.config.Config.getEmailSubject())+'&'+
-     	  'repProb='+ doweown.config.Config.getEmailTo() +'&' +
-     	  'repComm='+ doweown.config.Config.getEmailTo() +'&' +
-     	  'cat=' + encodeURIComponent(doweown.config.Config.getEmailCategory())+ '&' +
+     	  'pageTitle='+ encodeURIComponent(doweown.config.Config.getEmailSubject())+ 
+     	  '%20for%20'+ encodeURIComponent(prefLibrary) +'&'+
+     	  'repProb='+ libraryEmail +'&' +
+     	  'repComm='+ libraryEmail +'&' +
+     	  'title=' + encodeURIComponent(doweown.config.Config.getEmailCategory())+ 
+     	    '%20for%20'+ encodeURIComponent(prefLibrary) +'&' +
      	  'PROJECTNAME=doweown&fromUser=true&'+
      	  'firstName='+ encodeURIComponent(prefFirstName) + '&' +
      	  'lastName=' + encodeURIComponent(prefLastName) + '&' +
