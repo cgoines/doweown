@@ -3,7 +3,8 @@ Ext.define('doweown.model.Library', {
     config: {
 	fields: [
 		{name: 'name', type: 'string'},
-		{name: 'email', type: 'string'}
+		{name: 'email', type: 'string'},
+		{name: 'libcode', type: 'string'}
 	]
    } 
 });
