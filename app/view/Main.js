@@ -76,7 +76,7 @@ Ext.define('doweown.view.Main', {
 				{xtype: 'textfield', name: 'firstname', label: 'First <br>Name'},
 				{xtype: 'textfield', name: 'lastname', label: 'Last <br>Name'},
 				{xtype: 'textfield', name: 'email', label: 'E-mail'},
-				{xtype: 'selectfield', name: 'library', label: 'Library', store: 'libraries', displayValue: 'name', valueFIeld: 'email'},
+				{xtype: 'selectfield', name: 'library', label: 'Library', store: 'libraries', displayValue: 'name', valueField: 'email'},
                                 {xtype: 'textfield', name: 'school', label: 'School /<br>Unit'},
                                 {xtype: 'selectfield', name: 'affiliation', label: 'Affiliation',
 				 options: [
