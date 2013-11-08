@@ -27,7 +27,7 @@ Ext.define('doweown.store.LibraryStore', {
 		{name: 'Loeb', email: 'doweownthis@hulmail.harvard.edu', libcode: '20'},
 		{name: 'Fung', email: 'doweownthis@hulmail.harvard.edu', libcode: '21'},
 		{name: 'I Tatti', email: 'doweownthis@hulmail.harvard.edu', libcode: '22'},
-		{name: 'African and African American Studies Reading Room', email: 'doweownthis@hulmail.harvard.edu', libcode: '23'}
+		{name: 'African and African American Studies Reading Room', email: 'doweownthis@hulmail.harvard.edu', libcode: '23'},
                 {name: 'Other', email: 'doweownthis@hulmail.harvard.edu', libcode: '24'}
 	   ]
 	}
