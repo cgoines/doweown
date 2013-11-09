@@ -28,6 +28,9 @@ Ext.define('doweown.controller.Main', {
 		'prefsForm': 'main #prefsform',
 		'scanResetBtn1': 'main #scanreset1',
 		'scanResetBtn2': 'main #scanreset2',
+		'feedbackBtn': 	 'main #feedbackBtn',
+		'feedbackPd':	 'main #feedbackPd',
+		'borrowDirectBtn': 'main #borrowDirectBtn',
 		'tabBar': 'main'
 		//'singleBookList': '#singleBookList'
         },
@@ -40,7 +43,9 @@ Ext.define('doweown.controller.Main', {
 	    	resetBtn: { tap: 'resetPrefs'},
 	    	prefsForm: { show: 'loadPrefs'},
 	    	scanResetBtn1: { tap: 'resetScan' },
-	    	scanResetBtn2: { tap: 'resetScan' }
+	    	scanResetBtn2: { tap: 'resetScan' },
+	    	feedbackBtn:  { tap: 'launchFeedbackForm' },
+	    	borrowDirectBtn: { tap: 'launchBorrowDirect' }
          }
     },
     
@@ -239,11 +244,11 @@ Ext.define('doweown.controller.Main', {
 	            'date': date,
 	            'publisher': publisher,
 	            'ISBN': ISBN,
+	            'OCLCnumber': OCLCnumber, 
 	            'totalLibCount': totalLibCount,
 		        'borrowDirectUrl': borrowDirectURL,
-	            'library': library,
-	            'mailto': mainController.generateMailto(title, author, date, 
-	            	publisher, emailISBN, OCLCnumber)     	            
+	            'library': library
+	            //'mailto': mainController.generateMailto(title, author, date, publisher, emailISBN, OCLCnumber)     	            
 	          });
 	          //console.log('worldcat record created');
 	          worldCatStore.add(worldCatRec);
@@ -625,30 +630,21 @@ Ext.define('doweown.controller.Main', {
      },
      
      
-     generateMailto: function(title, author, date, publisher, emailISBN, OCLCnumber) {
+     generateFeedbackUrl: function(title, author, date, publisher, emailISBN, 
+     	OCLCnumber, libraryEmail, libraryName) {
      	var prefsStore = Ext.getStore('PrefsStore');
 		var prefFirstName = '';
 	    var prefLastName = '';
 		var prefEmail = '';
-	    var prefLibrary = '';
 	    var prefSchool = '';
-		var prefAffiliation = '';
-		var idx = '1';
-		var libraryStore = Ext.getStore('LibraryStore');
-        var libraryRec;
-		var libraryEmail = doweown.config.Config.getEmailTo();
 	          
 	    if (prefsStore.getAllCount() > 0) {
      		var pref =  prefsStore.getAt(0);
-     			prefFirstName  = pref.get('firstname');
-     			prefLastName = pref.get('lastname');
-     			prefEmail = pref.get('email');
-     			idx = pref.get('library');
-     			libraryRec = libraryStore.findRecord('libcode', idx);
-     			libraryEmail =  libraryRec.get('email');
-     			prefLibrary = libraryRec.get('name');
-     			prefSchool = pref.get('school');
-     			prefAffiliation = pref.get('affiliation');
+     		prefFirstName  = pref.get('firstname');
+     		prefLastName = pref.get('lastname');
+     		prefEmail = pref.get('email');
+     		prefSchool = pref.get('school');
+     		prefAffiliation = pref.get('affiliation');
      	}
      	
         
@@ -656,11 +652,11 @@ Ext.define('doweown.controller.Main', {
      	return doweown.config.Config.getFeedbackUrl() + 
      	  'lbt=Do%20We%20Own%20This&refU=doweown%3A%2F%2Fharvard.edu%2F&' + 
      	  'pageTitle='+ encodeURIComponent(doweown.config.Config.getEmailSubject())+ 
-     	  '%20for%20'+ encodeURIComponent(prefLibrary) +'&'+
+     	  '%20for%20'+ encodeURIComponent(libraryName) +'&'+
      	  'repProb='+ libraryEmail +'&' +
      	  'repComm='+ libraryEmail +'&' +
      	  'title=' + encodeURIComponent(doweown.config.Config.getEmailCategory())+ 
-     	    '%20for%20'+ encodeURIComponent(prefLibrary) +'&' +
+     	    '%20for%20'+ encodeURIComponent(libraryName) +'&' +
      	  'PROJECTNAME=doweown&fromUser=true&'+
      	  'firstName='+ encodeURIComponent(prefFirstName) + '&' +
      	  'lastName=' + encodeURIComponent(prefLastName) + '&' +
@@ -672,16 +668,64 @@ Ext.define('doweown.controller.Main', {
 	        'Date:%20' + encodeURIComponent(date) + '%0A' +
 	        'Publisher:%20' + encodeURIComponent(publisher) + '%0A' +
 	        'ISBN:%20' + emailISBN +
-	        'OCLC Number:%20' + OCLCnumber + '%0A' +
+	        'OCLC%20Number:%20' + OCLCnumber + '%0A' +
 	        '------------------------%0A' +
-	        'Requester information:%0A%0A' +
+	        'Requester%20information:%0A%0A' +
 	        'Name:%20' + encodeURIComponent(prefFirstName) + '%20' + 
 	           encodeURIComponent(prefLastName) +'%0A' +
-	        'Preferred%20Library:%20' + encodeURIComponent(prefLibrary) + '%0A' +
 	        'School%2FUnit:%20' + encodeURIComponent(prefSchool) + '%0A' +
 	        'Affiliation:%20' + encodeURIComponent(prefAffiliation) + '%0A%0A' +
 	        encodeURIComponent(doweown.config.Config.getEmailFooter());
      	            
+     },
+     
+     
+     launchFeedbackForm: function() {
+     	var pulldown = this.getFeedbackPd();
+     	var idx = pulldown.getValue();
+     	if (typeof idx == 'undefined')  {
+     		var prefsStore = Ext.getStore('PrefsStore');
+     		var pref =  prefsStore.getAt(0);
+     		idx = pref.get('library');   		
+     	}
+     	var libraryStore = Ext.getStore('LibraryStore');
+        var libraryRec, libraryEmail, libraryName, url;
+        libraryRec = libraryStore.findRecord('libcode', idx);
+     	libraryEmail =  libraryRec.get('email');
+     	libraryName = libraryRec.get('name');
+     	var title = '', 
+     		author = '', 
+     		date = '', 
+     		publisher = '', 
+        	emailISBN = '', 
+        	OCLCnumber = '';
+        var worldCat = Ext.getStore('WorldCatStore');
+        var worldCatRec = worldCat.getAt(0);
+        author = worldCatRec.get('author');
+        title = worldCatRec.get('title');
+        date = worldCatRec.get('date');
+        publisher = worldCatRec.get('publisher');
+        var ISBN = worldCatRec.get('ISBN');
+		if (ISBN instanceof Array ) {
+	    	for ( var i in ISBN ) {
+	    	  emailISBN = emailISBN + ISBN[i] + '%0A';
+	        }
+	    } else {
+	          	emailISBN = ISBN;
+	    }
+        OCLCnumber = worldCatRec.get('OCLCnumber');
+        url = this.generateFeedbackUrl(title, author, date, publisher, 
+        	emailISBN, OCLCnumber, libraryEmail, libraryName);
+        window.open(url, '_system');
+     
+     },
+     
+     
+     launchBorrowDirect: function() {
+     	var worldCat = Ext.getStore('WorldCatStore');
+        var worldCatRec = worldCat.getAt(0);
+     	var url = worldCatRec.get('borrowDirectUrl');
+     	window.open(url, '_system');
      }
      
 
