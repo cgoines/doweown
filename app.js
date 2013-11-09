@@ -29,7 +29,7 @@ Ext.application({
 
     views: [ 'Main', 'SingleBook', 'AvailBook', 'SingleBookView', 'AvailView', 'WorldCatView', 'History' ],
 
-    models: [ 'Isbn','Avail','Availability', 'Branch','Repository','Collection','History', 
+    models: [ 'Isbn','Avail', 'Branch','Repository','Collection','History', 
 	'Prefs','ItemRecord','NoItems','HoldTag','Gbooks','AvailVal', 'WorldCatBooks', 'Library' ],
 
     controllers: ['Main'],
