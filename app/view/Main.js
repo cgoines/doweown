@@ -123,7 +123,7 @@ Ext.define('doweown.view.Main', {
 			{ xtype: 'panel', styleHtmlContent: true, scrollable: true,
 			  html: '<p><b>Do we own this?</b><br>' +
 				'A mobile app for library collection development' +
-                      		'<p>Version: 0.95' +
+                      		'<p>Version: ' + doweown.config.Config.getVersion() +
 				'<p><i>Project Team:</i><br>' +
 				'Thomas Ma, Bibliographic Services Manager, Information and Technical Services<br>' +
 				'Chip Goines, Digital Library Software Engineer, Library Technology Services<br>' + 
