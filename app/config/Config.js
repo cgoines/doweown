@@ -16,6 +16,7 @@ Ext.define('doweown.config.Config', {
 		hollisSimilarUrl: 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?q=title:',
 		googleBooksUrl:   'https://www.googleapis.com/books/v1/volumes?q=',
 		noThumbnailUrl:   'http://books.google.com/googlebooks/images/no_cover_thumb.gif',
+		version:	  '0.98 beta',
 		worldCatUrl:	  'http://www.worldcat.org/webservices/catalog/content/libraries/isbn/',
 		worldCatLibs:     'COO,YUS,PUL,RBN,DRB,ZCU,ZCL,VVT,VYC,YUM,GXR,PAU,PAULM,DRP,PLL',
 		worldCatDevKey:   ''
