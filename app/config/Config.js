@@ -19,6 +19,7 @@ Ext.define('doweown.config.Config', {
 		version:	  '0.98 beta',
 		worldCatUrl:	  'http://www.worldcat.org/webservices/catalog/content/libraries/isbn/',
 		worldCatLibs:     'COO,YUS,PUL,RBN,DRB,ZCU,ZCL,VVT,VYC,YUM,GXR,PAU,PAULM,DRP,PLL',
+		worldCatHarvardLibs: 'HMM,HRA,HTV,BOH,HBS,CLS,HCH,FLL,BHA,HMG,HMZ,HFL,HLS,HHG,KSG,HVL,HMU,HMS,SLR,TOZ,HMY,SYS',
 		worldCatDevKey:   ''
 	},
 
