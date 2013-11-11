@@ -15,7 +15,7 @@ Ext.define('doweown.view.AvailView', {
 		'<tpl switch="isavail">'+
 			'<tpl case="N" case="n"><font color="red"><b>Not Available</b></font>'+
 			'<tpl default><font color="green"><b>Available</b></font></tpl>: {stat}<br>  '+
-			    '<tpl if="call">Call#: {call}<br></tpl> '+
+			    '<tpl if="call &gt; 0">Call#: {call}<br></tpl> '+
 			     '<b><a href="{req.href}" onclick="window.open(this.href,\'_system\'); return false;">{req.content}</a></b></br>'+
 			'</tpl> '+
 			'<tpl for="holdtag"><br> {availkey} <b><a href="{availval.url}" onclick="window.open(this.href,\'_system\'); return false;" >{availval.content}</a></b><br></tpl>  '+
