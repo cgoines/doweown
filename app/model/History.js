@@ -7,7 +7,8 @@ Ext.define('doweown.model.History', {
                 {name: 'publisher',     type: 'string'},
 		{name: 'date',          type: 'string'},
 		{name: 'thumbnail',     type: 'string', defaultValue: doweown.config.Config.getNoThumbnailUrl() },
-		{name: 'barcode', 	type: 'string'}
+		{name: 'barcode', 	type: 'string'},
+		{name: 'owned',		type: 'boolean', defaultValue: false}
         ]
     }
 });
