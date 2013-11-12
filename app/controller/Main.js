@@ -326,7 +326,8 @@ Ext.define('doweown.controller.Main', {
 			'author': author,
 			'publisher': publisher,
 			'date': date,
-			'barcode': barcode
+			'barcode': barcode,
+			'owned': false
 		  });
 		  var historyStore = Ext.getStore('HistoryStore');
 		  if ( historyStore.findExact('barcode', barcode) === -1 ) {
@@ -543,7 +544,8 @@ Ext.define('doweown.controller.Main', {
                         			'author': author,
                         			'publisher': publisher,
                         			'date': date,
-                        			'barcode': barcode
+                        			'barcode': barcode,
+                        			'owned': true
                   			});
                   			var historyStore = Ext.getStore('HistoryStore');
                   			if ( historyStore.findExact('barcode', barcode) === -1 ) {
