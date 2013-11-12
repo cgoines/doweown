@@ -189,6 +189,55 @@ Ext.define('doweown.controller.Main', {
 	
 	
 	},
+	
+	 worldCatHollisLookup: function(barcode, navListWindow) {
+	 	var ms = navListWindow;
+  		var mainController = this;
+		var worldCatURL = doweown.config.Config.getWorldCatUrl();
+		var lookupURL = worldCatURL + barcode;
+		var harvardBarcode = '';
+		
+		//show searching window
+		navListWindow.setMasked({ xtype: 'loadmask', message: 'Searching...'});	
+		Ext.data.JsonP.request({
+		   url: lookupURL,
+		   disableCaching: true,
+		   callbackKey: 'callback',
+		   params: {
+		     wskey: doweown.config.Config.getWorldCatDevKey(),
+		     oclcsymbol:  doweown.config.Config.getWorldCatHarvardLibs(),
+		     format: 'json'
+		   },
+		   
+		   success: function(res, request) {  //go to hollis to get avail info
+		   	  if (typeof res.title != 'undefined'){ 
+		   	  	var library = res.library;
+		   	    var opacUrl = library[0].opacUrl;  //just get the first isbn. ideally
+		   	    // this should be handled within one call to presto - TODO
+		   	    //console.log(opacUrl);
+		   	    var harvardBarcode = (opacUrl.match(/request\%3D[0-9]+/))[0];
+		   	    harvardBarcode = harvardBarcode.replace('request%3D','');
+		   	    harvardBarcode = harvardBarcode.replace('%26','');
+		   	    //console.log('harvard barcode found: ' + harvardBarcode );
+	    	
+		   	    //go to hollis for availability
+		   	 	mainController.hollisLookup(harvardBarcode, navListWindow);
+		   	  }
+		   	  else {
+		   	  	mainController.worldCatLookup(barcode, navListWindow);
+		   	  }
+		   
+		   },
+		   
+		   failure: function(res, request) { // worldcat BD libraries
+		   	  //mainController.worldCatLookup(barcode, navListWindow);
+		   	  ms.setMasked(false);
+	    	  Ext.Msg.alert('ISBN Not Found',"Catalog info for ISBN " + barcode + " not found.");	
+		   }	   
+		
+		});
+	 
+	 },
    
     worldCatLookup: function(barcode, navListWindow) {
   	//console.log('commencing worldcat lookup for isbn: ' + barcode);
@@ -328,8 +377,7 @@ Ext.define('doweown.controller.Main', {
 	    if (gBooksStore.getAllCount() > 0) {
         		gBooksStore.removeAll();
          }
-		//show searching window
-		navListWindow.setMasked({ xtype: 'loadmask', message: 'Searching...'});	
+		
 		//new direct hollis call
 		Ext.data.JsonP.request({
                        url: isbnURL,
@@ -512,7 +560,8 @@ Ext.define('doweown.controller.Main', {
                if (result.text)
 			    {
 			    	if (mainController.validateBarcode(barcode)) {
-                		mainController.hollisLookup(barcode, mainController.getMainScreen()); 
+                		//mainController.hollisLookup(barcode, mainController.getMainScreen()); 
+                		mainController.worldCatHollisLookup(barcode, mainController.getMainScreen());
                 	}
                 	else {
                 		Ext.Msg.alert('Invalid barcode',"Invalid barcode " + barcode);
@@ -531,7 +580,8 @@ Ext.define('doweown.controller.Main', {
 	var mainController = this;
 	if (barcode.length > 0) {
 	  if (mainController.validateBarcode(barcode)) {
-		mainController.hollisLookup(barcode, mainController.getMainScreen());
+		//mainController.hollisLookup(barcode, mainController.getMainScreen());
+		mainController.worldCatHollisLookup(barcode, mainController.getMainScreen());
 	  }
 	  else {
 	   	Ext.Msg.alert("Invalid barcode " + barcode);
@@ -544,7 +594,8 @@ Ext.define('doweown.controller.Main', {
     searchFromHistory: function(list, index, target, record) {
 	var mainController = this;
 	list.deselectAll();
-	mainController.hollisLookup(record.get('barcode'), mainController.getHistoryNav());
+	//mainController.hollisLookup(record.get('barcode'), mainController.getHistoryNav());
+	mainController.worldCatHollisLookup(record.get('barcode'), mainController.getHistoryNav());
      },
 
 
