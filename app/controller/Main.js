@@ -641,7 +641,11 @@ Ext.define('doweown.controller.Main', {
         		pref.set('school', formValues.school);
         		pref.set('affiliation', formValues.affiliation);
 				prefsStore.sync();
+				/* - return to scan screen?  TODO
+				var tabBar = this.getTabBar();
+				tabBar.setActiveItem(0);*/
 				Ext.Msg.alert("Settings saved.");
+				
          }
          else {
          	var pref = Ext.create( 'doweown.store.PrefsStore', 
