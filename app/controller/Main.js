@@ -455,19 +455,21 @@ Ext.define('doweown.controller.Main', {
                              else
                                 title = title + ': ' + res.mods.titleInfo.subTitle;
                            }
-                          //console.log('hollis title: ' + title); 
-                          if (res.mods.name instanceof Array ) {
-                          	if ( res.mods.name[0].namePart instanceof Array ) {
-                            author = res.mods.name[0].namePart[0];
-                            } else {
-                            	 author = res.mods.name[0].namePart;
-                        	}
-                          }
-                          else {
-                            if ( res.mods.name.namePart instanceof Array ) {
-                              author = res.mods.name.namePart[0];
-                            } else {                        
-                              author = res.mods.name.namePart;
+                          //console.log('hollis title: ' + title);
+                          if (res.mods.name) { 
+                            if (res.mods.name instanceof Array ) {
+                          	  if ( res.mods.name[0].namePart instanceof Array ) {
+                              author = res.mods.name[0].namePart[0];
+                              } else {
+                            	   author = res.mods.name[0].namePart;
+                        	  }
+                            }
+                            else {
+                              if ( res.mods.name.namePart instanceof Array ) {
+                                 author = res.mods.name.namePart[0];
+                              } else {                        
+                                author = res.mods.name.namePart;
+                              }
                             }
                           }
                           //console.log('hollis author: ' + author);
