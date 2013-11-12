@@ -210,10 +210,12 @@ Ext.define('doweown.controller.Main', {
 		   },
 		   
 		   success: function(res, request) {  //go to hollis to get avail info
-		   	  if (typeof res.title != 'undefined'){ 
+		   	  if (typeof res.totalLibCount != 'undefined'){ 
 		   	  	var library = res.library;
-		   	    var opacUrl = library[0].opacUrl;  //just get the first isbn. ideally
-		   	    // this should be handled within one call to presto - TODO
+		   	  	// just get the first isbn. ideally this should be handled with
+		   	  	// one call to presto, but most of the listings have the same isbn, so 
+		   	  	// grabbing the first one seems to be ok.
+		   	    var opacUrl = library[0].opacUrl;  
 		   	    //console.log(opacUrl);
 		   	    var harvardBarcode = (opacUrl.match(/request\%3D[0-9]+/))[0];
 		   	    harvardBarcode = harvardBarcode.replace('request%3D','');
@@ -224,15 +226,16 @@ Ext.define('doweown.controller.Main', {
 		   	 	mainController.hollisLookup(harvardBarcode, navListWindow);
 		   	  }
 		   	  else {
-		   	  	mainController.worldCatLookup(barcode, navListWindow);
+		   	  	//mainController.worldCatLookup(barcode, navListWindow);
+		   	  	//try hollis directly since not all harvard libraries are in worldcat
+		   	  	mainController.hollisLookup(barcode, navListWindow);
 		   	  }
 		   
 		   },
 		   
-		   failure: function(res, request) { // worldcat BD libraries
+		   failure: function(res, request) { // try hollis directly anyway
 		   	  //mainController.worldCatLookup(barcode, navListWindow);
-		   	  ms.setMasked(false);
-	    	  Ext.Msg.alert('ISBN Not Found',"Catalog info for ISBN " + barcode + " not found.");	
+		   	  mainController.hollisLookup(barcode, navListWindow);	
 		   }	   
 		
 		});
