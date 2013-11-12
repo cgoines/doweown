@@ -121,7 +121,8 @@ Ext.define('doweown.controller.Main', {
                         	var historyRec = historyStore.getAt(idx);
 				if (historyRec.get('title') == '' )
                               	   historyRec.set('title', title);
-				historyRec.set('thumbnail', thumb);
+                if (thumb)
+				   historyRec.set('thumbnail', thumb);
 				historyRec.set('date', date);
 				if (historyRec.get('publisher') == '')
 				  historyRec.set('publisher', publisher);
@@ -433,14 +434,27 @@ Ext.define('doweown.controller.Main', {
                                                                             
                           if ( typeof res.mods.titleInfo.title === 'string') 
                           	title = res.mods.titleInfo.title;
-                          else if (res.mods.titleInfo instanceof Array) 
+                          else if (res.mods.titleInfo instanceof Array) { 
                           	title = res.mods.titleInfo[0].title;
+                          	if (res.mods.titleInfo[0].nonSort) 
+                          	   title = res.mods.titleInfo[0].nonSort + ' ' +title;
+                          	if (res.mods.titleInfo[0].subTitle) {
+                          	   if ( (/^and/).test(res.mods.titleInfo[0].subTitle) ) 
+                          	      title = title + ' ' + res.mods.titleInfo[0].subTitle;
+                          	   else 
+                          	      title = title + ': ' + res.mods.titleInfo[0].subTitle;
+                          	 }
+                          }	
                           else 
                           	title = '';
                           if (res.mods.titleInfo.nonSort) 
                              title = res.mods.titleInfo.nonSort + ' ' +title;
-                          if (res.mods.titleInfo.subTitle)
-                             title = title + ': ' + res.mods.titleInfo.subTitle;
+                          if (res.mods.titleInfo.subTitle) {
+                             if ( (/^and/).test(res.mods.titleInfo.subTitle) ) 
+                                title = title + ' ' + res.mods.titleInfo.subTitle;
+                             else
+                                title = title + ': ' + res.mods.titleInfo.subTitle;
+                           }
                           //console.log('hollis title: ' + title); 
                           if (res.mods.name instanceof Array ) {
                           	if ( res.mods.name[0].namePart instanceof Array ) {
