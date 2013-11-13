@@ -3,6 +3,14 @@ Ext.define('doweown.store.LibraryStore', {
         alias: 'store.LibraryStore',
 	config: {
 	   model: 'doweown.model.Library',
+	   /*proxy: {
+		type: 'ajax',
+		url: doweown.config.Config.getLibraryListUrl(),
+		reader: {
+		   type: 'json',
+		   rootProperty: 'libraries'
+		}
+	   },*/
 	   autoLoad: true,
 	   data: [
 		{name: 'Lamont', email: 'doweownthis@hulmail.harvard', libcode: '1'},
