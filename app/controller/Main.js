@@ -389,18 +389,28 @@ Ext.define('doweown.controller.Main', {
                        callbackKey: 'jsonp',
                        disableCaching: true,
                        success: function(res, request) {
-			           //console.log("hollis lookup");
+                         var response = false;
+			             //console.log("hollis lookup");
                          // Get the isbn data from the json object result
                          if (res.mods) {
+                         	if (res.mods instanceof Array)
+                         	   response = res.mods[0]; 
+                         	else
+                         	   response = res.mods;
+                         }
+                         else if (res.modsCollection.mods) {
+                         	response = res.modsCollection.mods[0];
+                         }
+                         if (response) {
                           isbnResult = true;
                           //console.log("isbn worked");
                           
                           var isbnString = '';
-                          var isbnList = res.mods.identifier;
+                          var isbnList = response.identifier;
                           if (isbnList instanceof Array) {
                             for (var i=0; i < isbnList.length; i++) {
-                          	  if (res.mods.identifier[i].type == 'isbn') {
-                          	      var l = res.mods.identifier[i].content;
+                          	  if (response.identifier[i].type == 'isbn') {
+                          	      var l = response.identifier[i].content;
                           	      if (typeof l == 'string' || l instanceof String){
                           	          l = l.split(' ',1);
                           	       } 
@@ -411,13 +421,13 @@ Ext.define('doweown.controller.Main', {
                           	  }
                             }
                           } else { //single isbn
-                            if (res.mods.identifier.content instanceof String || 
-                              typeof res.mods.identifier.content == 'string') {
-                              var l = res.mods.identifier.content.split(' ',1);
+                            if (response.identifier.content instanceof String || 
+                              typeof response.identifier.content == 'string') {
+                              var l = response.identifier.content.split(' ',1);
                               isbnString = 'isbn:' + l;
                             }
                             else
-                              isbnString = 'isbn:' + res.mods.identifier.content;
+                              isbnString = 'isbn:' + response.identifier.content;
                           }
                           // append the original isbn barcode found in the gbooks url if 
                           // not in the hollis record, since its not always there. good grief
@@ -430,57 +440,57 @@ Ext.define('doweown.controller.Main', {
                           //call google
 	                      //console.log('gbooks url: ' + gBooksURL);
                                                                           
-                          hollisId = res.mods.recordInfo.recordIdentifier.substring(0,9);
+                          hollisId = response.recordInfo.recordIdentifier.substring(0,9);
                           //console.log('hollis id is: ' + hollisId);
                                                                             
-                          if ( typeof res.mods.titleInfo.title === 'string') 
-                          	title = res.mods.titleInfo.title;
-                          else if (res.mods.titleInfo instanceof Array) { 
-                          	title = res.mods.titleInfo[0].title;
-                          	if (res.mods.titleInfo[0].nonSort) 
-                          	   title = res.mods.titleInfo[0].nonSort + ' ' +title;
-                          	if (res.mods.titleInfo[0].subTitle) {
-                          	   if ( (/^and/).test(res.mods.titleInfo[0].subTitle) ) 
-                          	      title = title + ' ' + res.mods.titleInfo[0].subTitle;
+                          if ( typeof response.titleInfo.title === 'string') 
+                          	title = response.titleInfo.title;
+                          else if (response.titleInfo instanceof Array) { 
+                          	title = response.titleInfo[0].title;
+                          	if (response.titleInfo[0].nonSort) 
+                          	   title = response.titleInfo[0].nonSort + ' ' +title;
+                          	if (response.titleInfo[0].subTitle) {
+                          	   if ( (/^and/).test(response.titleInfo[0].subTitle) ) 
+                          	      title = title + ' ' + response.titleInfo[0].subTitle;
                           	   else 
-                          	      title = title + ': ' + res.mods.titleInfo[0].subTitle;
+                          	      title = title + ': ' + response.titleInfo[0].subTitle;
                           	 }
                           }	
                           else 
                           	title = '';
-                          if (res.mods.titleInfo.nonSort) 
-                             title = res.mods.titleInfo.nonSort + ' ' +title;
-                          if (res.mods.titleInfo.subTitle) {
-                             if ( (/^and/).test(res.mods.titleInfo.subTitle) ) 
-                                title = title + ' ' + res.mods.titleInfo.subTitle;
+                          if (response.titleInfo.nonSort) 
+                             title = response.titleInfo.nonSort + ' ' +title;
+                          if (response.titleInfo.subTitle) {
+                             if ( (/^and/).test(response.titleInfo.subTitle) ) 
+                                title = title + ' ' + response.titleInfo.subTitle;
                              else
-                                title = title + ': ' + res.mods.titleInfo.subTitle;
+                                title = title + ': ' + response.titleInfo.subTitle;
                            }
                           //console.log('hollis title: ' + title);
-                          if (res.mods.name) { 
-                            if (res.mods.name instanceof Array ) {
-                          	  if ( res.mods.name[0].namePart instanceof Array ) {
-                              author = res.mods.name[0].namePart[0];
+                          if (response.name) { 
+                            if (response.name instanceof Array ) {
+                          	  if ( response.name[0].namePart instanceof Array ) {
+                              author = response.name[0].namePart[0];
                               } else {
-                            	   author = res.mods.name[0].namePart;
+                            	   author = response.name[0].namePart;
                         	  }
                             }
                             else {
-                              if ( res.mods.name.namePart instanceof Array ) {
-                                 author = res.mods.name.namePart[0];
+                              if ( response.name.namePart instanceof Array ) {
+                                 author = response.name.namePart[0];
                               } else {                        
-                                author = res.mods.name.namePart;
+                                author = response.name.namePart;
                               }
                             }
                           }
                           //console.log('hollis author: ' + author);
                           
                           var originInfo;
-                          if (res.mods.originInfo instanceof Array) {
-                          	originInfo = res.mods.originInfo[0];
+                          if (response.originInfo instanceof Array) {
+                          	originInfo = response.originInfo[0];
                           }
                           else {
-                          	originInfo = res.mods.originInfo;
+                          	originInfo = response.originInfo;
                           }
                           
                           if ( originInfo.place instanceof Array) {
@@ -558,6 +568,11 @@ Ext.define('doweown.controller.Main', {
                               }
                           });
                 	    }
+                	    else {
+                	    	ms.setMasked(false);
+                	    	Ext.Msg.alert('HOLLIS failed',"Lookup failed for ISBN\n" + barcode);
+                	    	//console.log('hollis response parse error');
+                	    }
             		   },
 					   failure: function(res, request) { //not in hollis
 			   			 //do worldcat lookup
@@ -585,7 +600,7 @@ Ext.define('doweown.controller.Main', {
                 		mainController.worldCatHollisLookup(barcode, mainController.getMainScreen());
                 	}
                 	else {
-                		Ext.Msg.alert('Invalid barcode',"Invalid barcode " + barcode);
+                		Ext.Msg.alert('Invalid ISBN','Invalid barcode ' + barcode);
                 	}	    
                 }
             },
@@ -605,7 +620,7 @@ Ext.define('doweown.controller.Main', {
 		mainController.worldCatHollisLookup(barcode, mainController.getMainScreen());
 	  }
 	  else {
-	   	Ext.Msg.alert("Invalid barcode " + barcode);
+	   	Ext.Msg.alert('Invalid ISBN', 'Invalid barcode ' + barcode);
 	  }
 	}
     },
@@ -641,7 +656,7 @@ Ext.define('doweown.controller.Main', {
         		pref.set('school', formValues.school);
         		pref.set('affiliation', formValues.affiliation);
 				prefsStore.sync();
-				/* - return to scan screen?  TODO
+				/* - return to scan screen?  TODO 
 				var tabBar = this.getTabBar();
 				tabBar.setActiveItem(0);*/
 				Ext.Msg.alert("Settings saved.");
