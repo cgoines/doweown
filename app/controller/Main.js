@@ -771,6 +771,45 @@ Ext.define('doweown.controller.Main', {
      },
      
      
+     generateMailto: function(title, author, date, publisher, emailISBN,
+     	OCLCnumber, libraryEmail, libraryName) {
+        var prefsStore = Ext.getStore('PrefsStore');
+        var prefFirstName = '';
+        var prefLastName = '';
+        var prefEmail = '';
+        var prefLibrary = '';
+        var prefSchool = '';
+        var prefAffiliation = '';
+
+        if (prefsStore.getAllCount() > 0) {
+            var pref = prefsStore.getAt(0);
+            prefFirstName = pref.get('firstname');
+            prefLastName = pref.get('lastname');
+            prefEmail = pref.get('email');
+            prefLibrary = pref.get('library');
+            prefSchool = pref.get('school');
+            prefAffiliation = pref.get('affiliation');
+        }
+        return 'mailto:' + libraryEmail +
+            '?subject=' + encodeURIComponent(doweown.config.Config.getEmailSubject()) + 
+            '%20for%20'+ encodeURIComponent(libraryName) + '&' +
+            'body=Title:%20' + encodeURIComponent(title) + '%0A' +
+            'Author:%20' + encodeURIComponent(author) + '%0A' +
+            'Date:%20' + encodeURIComponent(date) + '%0A' +
+            'Publisher:%20' + encodeURIComponent(publisher) + '%0A' +
+            'ISBN:%20' + emailISBN +
+            'OCLC%20Number:%20' + OCLCnumber + '%0A' +
+            '------------------------%0A' +
+            'Requester%20information:%0A%0A' +
+            'Name:%20' + encodeURIComponent(prefFirstName) + '%20' + 
+               encodeURIComponent(prefLastName) + '%0A' +
+            'E-mail:%20' + encodeURIComponent(prefEmail) + '%0A' +
+            'School%2FUnit:%20' + encodeURIComponent(prefSchool) + '%0A' +
+            'Affiliation:%20' + encodeURIComponent(prefAffiliation) + '%0A%0A' + 
+            encodeURIComponent(doweown.config.Config.getEmailFooter());
+    },
+     
+     
      launchFeedbackForm: function() {
      	var pulldown = this.getFeedbackPd();
      	var idx = pulldown.getValue();
@@ -805,7 +844,10 @@ Ext.define('doweown.controller.Main', {
 	          	emailISBN = ISBN;
 	    }
         OCLCnumber = worldCatRec.get('OCLCnumber');
-        url = this.generateFeedbackUrl(title, author, date, publisher, 
+        // sends plain email instead due to tma's suggestion
+        /*url = this.generateFeedbackUrl(title, author, date, publisher, 
+        	emailISBN, OCLCnumber, libraryEmail, libraryName);*/
+        url = this.generateMailto(title, author, date, publisher, 
         	emailISBN, OCLCnumber, libraryEmail, libraryName);
         window.open(url, '_system');
      
@@ -817,6 +859,10 @@ Ext.define('doweown.controller.Main', {
         var worldCatRec = worldCat.getAt(0);
      	var url = worldCatRec.get('borrowDirectUrl');
      	window.open(url, '_system');
+     },
+     
+     func1: function(msg) {
+        Ext.Msg.alert(msg);
      }
      
 
