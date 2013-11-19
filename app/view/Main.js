@@ -33,7 +33,7 @@ Ext.define('doweown.view.Main', {
 			 	  { xtype: 'spacer' , padding: 10},
 				  { xtype: 'button', itemId: 'scanBtn', text: 'Press Here to Scan', padding: '0 10 0 10'},
 				  { xtype: 'spacer', padding: 10},
-				  { xtype: 'container', html: 'Or enter a ISBN number below:', padding: '0 10 0 10'},
+				  { xtype: 'container', html: 'Or enter an ISBN number below:', padding: '0 10 0 10'},
 				  { xtype: 'spacer', padding: 10 },
 				  { xtype: 'textfield', itemId: 'isbnField', label: 'ISBN:', maxLength: 13, padding: '0 10 5 10'}
 				] 
