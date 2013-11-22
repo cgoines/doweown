@@ -3,8 +3,8 @@ Ext.define('doweown.config.Config', {
 
 	config: {
 		emailSubject:	  'Patron Acquisition Request',
-		emailTo:	  'doweownthis@hulmail.harvard',
-		emailSupport:	  'doweownthis@hulmail.harvard',
+		emailTo:	  'doweownthis@hulmail.harvard.edu',
+		emailSupport:	  'doweownthis@hulmail.harvard.edu',
 		emailFooter:	  'Sent from the "Do We Own This?" App',
 		emailCategory:	  'Patron Acquisition Request',
 		borrowDirectUrl:  'http://access.harvard.edu/access/servlet/access?__hulaccess_gateway=bdirect&__hulaccess_resource=&query=isbn%3D%22_ISBN_%22',
@@ -20,7 +20,7 @@ Ext.define('doweown.config.Config', {
 		version:	  '0.99 beta',
 		worldCatUrl:	  'http://www.worldcat.org/webservices/catalog/content/libraries/isbn/',
 		worldCatLibs:     'COO,YUS,PUL,RBN,DRB,ZCU,ZCL,VVT,VYC,YUM,GXR,PAU,PAULM,DRP,PLL',
-		worldCatHarvardLibs: 'HMM,HRA,HTV,BOH,HBS,CLS,HCH,FLL,BHA,HMG,HMZ,HFL,HLS,HHG,KSG,HVL,HMU,HMS,SLR,TOZ,HMY,SYS',
+		worldCatHarvardLibs: 'HMM,HRA,HTV,BOH,HBS,CLS,HCH,FLL,BHA,HMG,HMZ,HFL,HLS,HHG,KSG,HVL,HMU,HMS,SLR,TOZ,HMY,SYS,MCS,SQD',
 		worldCatDevKey:   ''
 	},
 
