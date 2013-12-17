@@ -6,7 +6,7 @@ Ext.define('doweown.store.HistoryStore', {
           model: 'doweown.model.History',
           autoLoad: true,
           proxy: {
-            type: 'memory'
+            type: 'localstorage'
           }
 
 	}
