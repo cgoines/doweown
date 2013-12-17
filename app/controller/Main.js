@@ -844,11 +844,15 @@ Ext.define('doweown.controller.Main', {
 	          	emailISBN = ISBN;
 	    }
         OCLCnumber = worldCatRec.get('OCLCnumber');
-        // sends plain email instead due to tma's suggestion
-        /*url = this.generateFeedbackUrl(title, author, date, publisher, 
-        	emailISBN, OCLCnumber, libraryEmail, libraryName);*/
-        url = this.generateMailto(title, author, date, publisher, 
+        
+        if ( doweown.config.Config.getUseFeedbackForm() ) {
+          url = this.generateFeedbackUrl(title, author, date, publisher, 
         	emailISBN, OCLCnumber, libraryEmail, libraryName);
+        }
+        else { // sends plain email instead due to tma's suggestion
+          url = this.generateMailto(title, author, date, publisher, 
+        	emailISBN, OCLCnumber, libraryEmail, libraryName);
+        }
         window.open(url, '_system');
      
      },
