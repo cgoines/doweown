@@ -24,6 +24,7 @@ Ext.define('doweown.controller.Main', {
 		'historyList': 'main #history',
 		'historyNav': '#historynav',
 		'resetBtn': 'main #resetBtn',
+		'clearBtn': 'main #clearHistoryBtn',
 		'saveBtn': 'main #saveBtn',
 		'prefsForm': 'main #prefsform',
 		'scanResetBtn1': 'main #scanreset1',
@@ -45,7 +46,8 @@ Ext.define('doweown.controller.Main', {
 	    	scanResetBtn1: { tap: 'resetScan' },
 	    	scanResetBtn2: { tap: 'resetScan' },
 	    	feedbackBtn:  { tap: 'launchFeedbackForm' },
-	    	borrowDirectBtn: { tap: 'launchBorrowDirect' }
+	    	borrowDirectBtn: { tap: 'launchBorrowDirect' },
+	    	clearBtn:	{ tap: 'clearHistory' }
          }
     },
     
@@ -718,6 +720,15 @@ Ext.define('doweown.controller.Main', {
      		navPanel2.reset();
      	}
      	
+     },
+     
+     clearHistory: function() {
+    	var historyStore = Ext.getStore('HistoryStore');
+    	historyStore.removeAll();
+		historyStore.load();
+		historyStore.sync();
+    	var hl = this.getHistoryList();
+    	hl.refresh();
      },
      
      
