@@ -18,7 +18,7 @@ Ext.define('doweown.view.History', {
             },*/
 	    listeners: {
                 initialize: function() {
-                        var clearButton = new Ext.Button({text: 'Clear History', itemId: 'clearhistory'});
+                        var clearButton = new Ext.Button({text: 'Clear History', padding: '3 0 3 0', ui: 'action', itemId: 'clearHistoryBtn'});
                         this.add(clearButton);
                 }
             }
