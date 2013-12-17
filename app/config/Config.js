@@ -18,6 +18,7 @@ Ext.define('doweown.config.Config', {
 		noThumbnailUrl:   'http://books.google.com/googlebooks/images/no_cover_thumb.gif',
 		libraryListUrl:   'http://hul.harvard.edu/~chip/liblab/libraries.json',
 		version:	  '0.99 beta',
+		useFeedbackForm:   true,
 		worldCatUrl:	  'http://www.worldcat.org/webservices/catalog/content/libraries/isbn/',
 		worldCatLibs:     'COO,YUS,PUL,RBN,DRB,ZCU,ZCL,VVT,VYC,YUM,GXR,PAU,PAULM,DRP,PLL',
 		worldCatHarvardLibs: 'HMM,HRA,HTV,BOH,HBS,CLS,HCH,FLL,BHA,HMG,HMZ,HFL,HLS,HHG,KSG,HVL,HMU,HMS,SLR,TOZ,HMY,SYS,MCS,SQD',
